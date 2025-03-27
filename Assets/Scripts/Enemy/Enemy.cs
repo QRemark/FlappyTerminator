@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour, IDisappearable
     private bool _canFollow = false;
     private float _timeOffset;
 
+    private bool _isDisappearing = false;
+
     private float _currentFollowDistance;
     private float _targetFollowDistance;
     private float _currentYOffset;
@@ -54,6 +56,7 @@ public class Enemy : MonoBehaviour, IDisappearable
 
     private void OnDisable()
     {
+        _isDisappearing = false;
         CancelInvoke(nameof(FireBullet));
         _canFollow = false; 
     }
@@ -106,6 +109,8 @@ public class Enemy : MonoBehaviour, IDisappearable
 
     public void Disappear()
     {
+        if (_isDisappearing) return;
+        _isDisappearing = true;
         Disappeared?.Invoke(this);
     }
 
@@ -131,7 +136,12 @@ public class Enemy : MonoBehaviour, IDisappearable
         if (_bulletSpawner != null)
         {
             Attack();
-            _bulletSpawner.Fire(transform.position);
+            Bullet bullet = _bulletSpawner.Fire(transform.position, false);
+
+            if (bullet != null)
+            {
+                bullet.SetOwner(transform);
+            }
         }
     }
 
