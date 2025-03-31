@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     private ScoreCounter _scoreCounter;
     private CollisionHandler _collisionHandler;
     private BulletSpawner _bulletSpawner;
+    private AttackAudio _playerAudio;
+
 
     [SerializeField] private Sprite _defaultSprite;
     [SerializeField] private Sprite _attackSprite;
@@ -25,6 +27,7 @@ public class Player : MonoBehaviour
         _collisionHandler = GetComponent<CollisionHandler>();
         _bulletSpawner = GetComponentInChildren<BulletSpawner>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _playerAudio = GetComponent<AttackAudio>();
     }
 
     private void OnEnable()
@@ -78,7 +81,8 @@ public class Player : MonoBehaviour
         if (_attackSprite != null && _spriteRenderer != null)
         {
             _spriteRenderer.sprite = _attackSprite;
-            Invoke(nameof(ResetSprite), 0.2f);
+            _playerAudio?.AttackSound();
+            Invoke(nameof(ResetSprite), 0.5f);
         }
     }
 

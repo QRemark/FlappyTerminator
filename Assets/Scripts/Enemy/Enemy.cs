@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour, IDisappearable
     private SpriteRenderer _spriteRenderer;
     private Transform _bulletPoolParent;
     private Transform _player;
+    private AttackAudio _enemyAudio;
+
     private bool _canFollow = false;
     private float _timeOffset;
 
@@ -42,6 +44,11 @@ public class Enemy : MonoBehaviour, IDisappearable
         {
             _bulletSpawner.SetPoolParent(_bulletPoolParent);
         }
+    }
+
+    private void Awake()
+    {
+        _enemyAudio = GetComponent<AttackAudio>();
     }
 
     private void OnEnable()
@@ -119,6 +126,7 @@ public class Enemy : MonoBehaviour, IDisappearable
         if (_attackSprite != null && _spriteRenderer != null)
         {
             _spriteRenderer.sprite = _attackSprite;
+            _enemyAudio?.AttackSound();
             Invoke(nameof(ResetSprite), 0.5f);
         }
     }
