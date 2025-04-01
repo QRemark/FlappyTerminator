@@ -21,7 +21,7 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
         if (_pool == null)
         {
             _pool = new Pool<T>();
-           // _pool.Initialize(_prefab, _poolCapacity, _poolMaxSize, _poolParent);
+            //_pool.Initialize(_prefab, _poolCapacity, _poolMaxSize, _poolParent);
             _pool.Initialize(_prefab, _poolCapacity, _poolMaxSize);
             _pool.PoolChanged += UpdateCounters;
         }

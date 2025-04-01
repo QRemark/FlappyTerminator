@@ -29,6 +29,8 @@ public class Enemy : MonoBehaviour, IDisappearable
 
     public event Action<IDisappearable> Disappeared;
 
+    //public static event Action<Enemy> OnSpawned;
+
     public void Initialize(Transform player, Transform poolParent)
     {
         _player = player;
@@ -53,10 +55,15 @@ public class Enemy : MonoBehaviour, IDisappearable
 
     private void OnEnable()
     {
+        _isDisappearing = false;
+        Disappeared = null;
+
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _spriteRenderer.sprite = _defaultSprite;
 
         transform.localScale = new Vector3(0.35f, 0.35f, 1f);
+
+        //OnSpawned?.Invoke(this);
 
         InvokeRepeating(nameof(FireBullet), 3f, 3f);
     }

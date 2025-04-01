@@ -103,10 +103,10 @@ public class Player : MonoBehaviour
         {
             GameOver?.Invoke();
         }
-        else if (interactable is ScoreZone)
-        {
-            _scoreCounter.Add();
-        }
+        //else if (interactable is ScoreZone)
+        //{
+        //    _scoreCounter.Add();
+        //}
     }
 
     public void Reset()

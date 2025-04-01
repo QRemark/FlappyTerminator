@@ -9,6 +9,7 @@ public class EnemySpawner : Spawner<Enemy>
     [SerializeField] private Transform _player;
     [SerializeField] private Transform _bulletPoolParent;
     [SerializeField] private float _minDistanceBetweenEnemies = 6f;
+    [SerializeField] private ScoreCounter _scoreCounter;
 
     private List<Vector3> _lastPositions = new List<Vector3>();
     private int _maxTrackedPositions = 5;
@@ -31,9 +32,17 @@ public class EnemySpawner : Spawner<Enemy>
                 enemy.Initialize(_player, _bulletPoolParent);
                 enemy.StartMovementDelay(0.01f);
 
+                enemy.Disappeared -= OnEnemyDisappeared;
+                enemy.Disappeared += OnEnemyDisappeared;
+
                 TrackPositions(spawnPosition);
             }
         }
+    }
+
+    private void OnEnemyDisappeared(IDisappearable disappearable)
+    {
+        _scoreCounter?.Add(10); 
     }
 
     private Vector3 GetValidSpawnPosition()

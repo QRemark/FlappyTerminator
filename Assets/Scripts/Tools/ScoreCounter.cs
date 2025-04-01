@@ -4,9 +4,20 @@ public class ScoreCounter : MonoBehaviour
 {
     private int _score;
 
-    public void Add()
+    public void RegisterEnemy(Enemy enemy)
     {
-        _score++;
+        enemy.Disappeared -= OnEnemyDisappeared;
+        enemy.Disappeared += OnEnemyDisappeared;
+    }
+
+    private void OnEnemyDisappeared(IDisappearable disappearable)
+    {
+        Add(10);
+    }
+
+    public void Add(int points)
+    {
+        _score += points;
         Debug.Log($"Очки: {_score}");
     }
 
