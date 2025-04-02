@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Xml.Linq;
 
 public class Pool<T> where T : MonoBehaviour
 {
@@ -37,6 +38,22 @@ public class Pool<T> where T : MonoBehaviour
             _deactiveObjects.Enqueue(obj);
         }
     }
+
+    public void Resize(int newSize)
+    {
+        if (newSize > TotalCreated)
+        {
+            for (int i = TotalCreated; i < newSize; i++)
+            {
+                T newObject = UnityEngine.Object.Instantiate(_prefab);
+                newObject.gameObject.SetActive(false);
+                _deactiveObjects.Enqueue(newObject); 
+            }
+            TotalCreated = newSize;
+        }
+    }
+
+
 
     public T GetObject()
     {

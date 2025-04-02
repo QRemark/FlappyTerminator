@@ -6,7 +6,7 @@ public class BackgroundMusic : MonoBehaviour
 {
     [SerializeField] private AudioClip _musicClip;
     [SerializeField] private AudioMixerGroup _musicGroup;
-    [SerializeField] private Player _player;
+    //[SerializeField] private Player _player;
     private AudioSource _audioSource;
     
     private void Awake()
@@ -23,25 +23,25 @@ public class BackgroundMusic : MonoBehaviour
         _audioSource.playOnAwake = false;
     }
 
-    private void OnEnable()
-    {
-        if (_player != null)
-        {
-            _player.GameOver += StopMusic;
-        }
+    //private void OnEnable()
+    //{
+    //    if (_player != null)
+    //    {
+    //        _player.GameOver += StopMusic;
+    //    }
 
-        PlayMusic();
-    }
+    //    PlayMusic();
+    //}
 
-    private void OnDisable()
-    {
-        if (_player != null)
-        {
-            _player.GameOver -= StopMusic;
-        }
-    }
+    //private void OnDisable()
+    //{
+    //    if (_player != null)
+    //    {
+    //        _player.GameOver -= StopMusic;
+    //    }
+    //}
 
-    private void PlayMusic()
+    public void PlayMusic()
     {
         if (_musicClip != null && !_audioSource.isPlaying)
         {
@@ -50,7 +50,7 @@ public class BackgroundMusic : MonoBehaviour
         }
     }
 
-    private void StopMusic()
+    public void StopMusic()
     {
         if (_audioSource.isPlaying)
         {

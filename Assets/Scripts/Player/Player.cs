@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     private CollisionHandler _collisionHandler;
     private BulletSpawner _bulletSpawner;
     private AttackAudio _playerAudio;
-
+    private Vector3 _startPosition;
 
     [SerializeField] private Sprite _defaultSprite;
     [SerializeField] private Sprite _attackSprite;
@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
         _bulletSpawner = GetComponentInChildren<BulletSpawner>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _playerAudio = GetComponent<AttackAudio>();
+        _startPosition = transform.position;
     }
 
     private void OnEnable()
@@ -103,17 +104,14 @@ public class Player : MonoBehaviour
         {
             GameOver?.Invoke();
         }
-        //else if (interactable is ScoreZone)
-        //{
-        //    _scoreCounter.Add();
-        //}
     }
 
     public void Reset()
     {
         _scoreCounter.Reset();
         _playerMover.Reset();
-        Time.timeScale = 1; ////временно
+        transform.position = _startPosition;
+        Time.timeScale = 1; 
     }
     private void OnGameOver()
     {

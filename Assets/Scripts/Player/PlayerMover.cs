@@ -38,6 +38,8 @@ public class PlayerMover : MonoBehaviour
 
     public void Reset()
     {
+        _rigidbody2D.velocity = Vector2.zero; 
+        transform.position = _startPosition;
         Debug.Log("Игрок сброшен.");
     }
 }

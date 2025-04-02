@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class EnemySpawner : Spawner<Enemy>
 {
-    [SerializeField] private float _spawnInterval = 2f;
-    [SerializeField] private Vector2 _spawnRangeX = new Vector2(10f, 12f);
+    [SerializeField] private float _spawnInterval = 4f;
+    [SerializeField] private Vector2 _spawnRangeX = new Vector2(10f, 20f);
     [SerializeField] private Vector2 _moveRange = new Vector2(-1f, 1f);
     [SerializeField] private Transform _player;
     [SerializeField] private Transform _bulletPoolParent;
@@ -21,6 +21,8 @@ public class EnemySpawner : Spawner<Enemy>
 
     private void SpawnEnemy()
     {
+        Debug.Log($"Попытка спавна врага. Активных: {ActiveObjectsCount}, Макс: {_poolMaxSize}");
+
         if (ActiveObjectsCount < _poolMaxSize && _player != null)
         {
             Enemy enemy = GetObjectFromPool();
@@ -36,13 +38,35 @@ public class EnemySpawner : Spawner<Enemy>
                 enemy.Disappeared += OnEnemyDisappeared;
 
                 TrackPositions(spawnPosition);
+
+                Debug.Log("Враг заспавнен!");
+            }
+            else
+            {
+                Debug.Log("Враг НЕ был заспавнен! Пул пуст.");
             }
         }
     }
 
     private void OnEnemyDisappeared(IDisappearable disappearable)
     {
-        _scoreCounter?.Add(10); 
+        _scoreCounter?.Add(10);
+
+        if (_poolMaxSize < 5)
+        {
+            _poolMaxSize++;
+
+            _pool.Resize(_poolMaxSize);
+        }
+
+        if (_spawnInterval > 0.6f)
+        {
+            _spawnInterval -= 0.4f;
+            
+            CancelInvoke(nameof(SpawnEnemy));
+            
+            InvokeRepeating(nameof(SpawnEnemy), _spawnInterval, _spawnInterval);
+        }
     }
 
     private Vector3 GetValidSpawnPosition()
