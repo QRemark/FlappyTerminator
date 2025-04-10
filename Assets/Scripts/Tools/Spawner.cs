@@ -5,7 +5,7 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
 {
     [SerializeField] protected T _prefab;
     [SerializeField] protected int _poolCapacity = 2;
-    //[SerializeField] protected Transform _poolParent;
+    
     [SerializeField] protected int _poolMaxSize = 3;
 
     protected Pool<T> _pool;
@@ -16,15 +16,21 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
 
     public event Action CountersUpdated;
 
-    protected virtual void Awake()
+    
+    protected virtual void Start()
     {
         if (_pool == null)
         {
             _pool = new Pool<T>();
-            //_pool.Initialize(_prefab, _poolCapacity, _poolMaxSize, _poolParent);
+    
             _pool.Initialize(_prefab, _poolCapacity, _poolMaxSize);
             _pool.PoolChanged += UpdateCounters;
         }
+    }
+
+    public void ClearActiveObjects()
+    {
+        _pool.ClearActiveObjects();
     }
 
     protected T GetObjectFromPool()
@@ -40,6 +46,26 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
 
         return obj;
     }
+    
+    protected T GetPreparedObjectFromPool()
+    {
+        T obj = _pool.GetPreparedObject();
+
+        if (obj == null)
+            return null;
+
+        TotalSpawned++;
+        UpdateCounters();
+        obj.Disappeared += ReturnObjectInPool;
+
+        return obj;
+    }
+
+    protected void ActivateObject(T obj)
+    {
+        _pool.ActivateObject(obj);
+    }
+    
 
     protected virtual void UpdateCounters()
     {
@@ -56,6 +82,7 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
     public void Spawn(Vector3 position)
     {
         T obj = GetObjectFromPool();
+
         if (obj != null)
         {
             obj.transform.position = position;

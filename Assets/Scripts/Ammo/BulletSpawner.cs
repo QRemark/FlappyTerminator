@@ -6,6 +6,11 @@ public class BulletSpawner : Spawner<Bullet>
 
     public Transform PoolParent { get; private set; }
 
+    private void Start()
+    {
+        base.Start();   
+    }
+
     public Bullet Fire(Vector3 position, bool isPlayerBullet)
     {
         Bullet bullet = GetObjectFromPool();
@@ -24,6 +29,11 @@ public class BulletSpawner : Spawner<Bullet>
 
 
         return bullet;
+    }
+
+    public void Reset()
+    {
+        ClearActiveObjects();
     }
 
     public void SetPoolParent(Transform poolParent)

@@ -9,6 +9,7 @@ public class Game : MonoBehaviour
     [SerializeField] private StartScreen _startScreen;
     [SerializeField] private RestartScreen _restartScreen;
     [SerializeField] private BackgroundMusic _backgroundMusic;
+    [SerializeField] private ScoreView _scoreView;
 
     private void OnEnable()
     {
@@ -25,6 +26,7 @@ public class Game : MonoBehaviour
     private void Start()
     {
         Time.timeScale = 0;
+        _scoreView.Hide();
         _startScreen.Open();
     }
 
@@ -44,6 +46,7 @@ public class Game : MonoBehaviour
     {
         Time.timeScale = 1;
         _player.Reset();
+        _scoreView.Show();
         _backgroundMusic.PlayMusic();
     }
 
@@ -51,6 +54,7 @@ public class Game : MonoBehaviour
     {
         Debug.Log("Показываем экран рестарта...");
         _backgroundMusic.StopMusic();
+        _scoreView.Hide();
         _restartScreen.Open();
     }
 }

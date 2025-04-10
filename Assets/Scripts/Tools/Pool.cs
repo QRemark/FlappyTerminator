@@ -1,18 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using System.Xml.Linq;
 
 public class Pool<T> where T : MonoBehaviour
 {
     private Queue<T> _deactiveObjects;
+    private List<T> _activeObjects;
     private T _prefab;
     private Transform _parent;
     private int _maxSize;
     private int _currentCount;
 
     public int TotalCreated { get; private set; }
-    public int ActiveCount { get; private set; }
+    
+    public int ActiveCount => _activeObjects.Count;
+
+    public List<T> ActiveObjects => _activeObjects;
 
     public event Action PoolChanged;
 
@@ -21,15 +24,16 @@ public class Pool<T> where T : MonoBehaviour
         _deactiveObjects = new Queue<T>();
     }
 
-    //public void Initialize(T prefab, int initialSize, int maxSize, Transform parent = null)
+  
     public void Initialize(T prefab, int initialSize, int maxSize)
     {
         _prefab = prefab;
-        //_parent = parent;
+  
         _maxSize = maxSize;
         _currentCount = 0;
 
         _deactiveObjects = new Queue<T>();
+        _activeObjects = new List<T>();
 
         for (int i = 0; i < initialSize; i++)
         {
@@ -39,6 +43,7 @@ public class Pool<T> where T : MonoBehaviour
         }
     }
 
+
     public void Resize(int newSize)
     {
         if (newSize > TotalCreated)
@@ -47,13 +52,46 @@ public class Pool<T> where T : MonoBehaviour
             {
                 T newObject = UnityEngine.Object.Instantiate(_prefab);
                 newObject.gameObject.SetActive(false);
-                _deactiveObjects.Enqueue(newObject); 
+                _deactiveObjects.Enqueue(newObject);
             }
             TotalCreated = newSize;
         }
     }
 
+    public void ClearActiveObjects()
+    {
+        foreach (var obj in _activeObjects)
+        {
+            obj.gameObject.SetActive(false);
+            _deactiveObjects.Enqueue(obj); 
+        }
 
+        _activeObjects.Clear();
+        PoolChanged?.Invoke();
+    }
+
+    
+    public T GetPreparedObject()
+    {
+        if (_deactiveObjects.Count > 0)
+        {
+            T obj = _deactiveObjects.Dequeue();
+            _activeObjects.Add(obj);
+            PoolChanged?.Invoke();
+            return obj;
+        }
+
+        return null;
+    }
+
+    public void ActivateObject(T obj)
+    {
+        if (!obj.gameObject.activeSelf)
+        {
+            obj.gameObject.SetActive(true);
+        }
+    }
+    
 
     public T GetObject()
     {
@@ -61,7 +99,8 @@ public class Pool<T> where T : MonoBehaviour
         {
             T @object = _deactiveObjects.Dequeue();
             @object.gameObject.SetActive(true);
-            ActiveCount++;
+            
+            _activeObjects.Add(@object);
             PoolChanged?.Invoke();
 
             return @object;
@@ -76,7 +115,8 @@ public class Pool<T> where T : MonoBehaviour
         {
             @object.gameObject.SetActive(false);
             _deactiveObjects.Enqueue(@object);
-            ActiveCount--;
+            
+            _activeObjects.Remove(@object);
             PoolChanged?.Invoke();
         }
     }

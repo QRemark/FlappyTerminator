@@ -5,7 +5,7 @@ public class EnemySpawner : Spawner<Enemy>
 {
     [SerializeField] private float _spawnInterval = 4f;
     [SerializeField] private Vector2 _spawnRangeX = new Vector2(10f, 20f);
-    [SerializeField] private Vector2 _moveRange = new Vector2(-1f, 1f);
+    [SerializeField] private Vector2 _moveRange = new Vector2(0, 0f);
     [SerializeField] private Transform _player;
     [SerializeField] private Transform _bulletPoolParent;
     [SerializeField] private float _minDistanceBetweenEnemies = 6f;
@@ -14,8 +14,32 @@ public class EnemySpawner : Spawner<Enemy>
     private List<Vector3> _lastPositions = new List<Vector3>();
     private int _maxTrackedPositions = 5;
 
+
     private void Start()
     {
+        base.Start();
+
+        InvokeRepeating(nameof(SpawnEnemy), _spawnInterval + 1f, _spawnInterval);
+    }
+
+    public void Reset()
+    {
+        _poolMaxSize = 3;
+        _spawnInterval = 4;
+
+        foreach (var enemy in _pool.ActiveObjects)
+        {
+            BulletSpawner bulletSpawner = enemy.GetComponent<BulletSpawner>();
+            
+            if (bulletSpawner != null)
+            {
+                bulletSpawner.Reset();
+            }
+        }
+
+        ClearActiveObjects();
+
+        CancelInvoke(nameof(SpawnEnemy));
         InvokeRepeating(nameof(SpawnEnemy), _spawnInterval, _spawnInterval);
     }
 
@@ -25,25 +49,24 @@ public class EnemySpawner : Spawner<Enemy>
 
         if (ActiveObjectsCount < _poolMaxSize && _player != null)
         {
-            Enemy enemy = GetObjectFromPool();
+            Enemy enemy = GetPreparedObjectFromPool();
 
             if (enemy != null)
             {
                 Vector3 spawnPosition = GetValidSpawnPosition();
+
                 enemy.transform.position = spawnPosition;
                 enemy.Initialize(_player, _bulletPoolParent);
                 enemy.StartMovementDelay(0.01f);
 
+                ActivateObject(enemy);
+
                 enemy.Disappeared -= OnEnemyDisappeared;
                 enemy.Disappeared += OnEnemyDisappeared;
 
-                TrackPositions(spawnPosition);
 
+                TrackPositions(spawnPosition);
                 Debug.Log("Враг заспавнен!");
-            }
-            else
-            {
-                Debug.Log("Враг НЕ был заспавнен! Пул пуст.");
             }
         }
     }
@@ -59,7 +82,7 @@ public class EnemySpawner : Spawner<Enemy>
             _pool.Resize(_poolMaxSize);
         }
 
-        if (_spawnInterval > 0.6f)
+        if (_spawnInterval > 1f)
         {
             _spawnInterval -= 0.4f;
             
@@ -75,8 +98,7 @@ public class EnemySpawner : Spawner<Enemy>
 
         for (int i = 0; i < maxAttempts; i++)
         {
-            float direction = Random.Range(0, 2) * 2 - 1; // -1 или 1
-            float randomX = Random.Range(_spawnRangeX.x, _spawnRangeX.y) * direction;
+            float randomX = Random.Range(_spawnRangeX.x, _spawnRangeX.y);
             float randomY = Random.Range(_moveRange.x, _moveRange.y);
 
             Vector3 position = new Vector3(
@@ -91,7 +113,7 @@ public class EnemySpawner : Spawner<Enemy>
             }
         }
 
-        return _player.position + new Vector3(15f, 0, 0);
+        return _player.position + new Vector3(25f, -1, 0);
     }
 
     private bool IsPositionValid(Vector3 position)
@@ -103,6 +125,7 @@ public class EnemySpawner : Spawner<Enemy>
                 return false;
             }
         }
+
         return true;
     }
 
@@ -112,6 +135,7 @@ public class EnemySpawner : Spawner<Enemy>
         {
             _lastPositions.RemoveAt(0);
         }
+
         _lastPositions.Add(position);
     }
 }

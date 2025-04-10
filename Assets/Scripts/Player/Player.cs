@@ -14,7 +14,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Sprite _defaultSprite;
     [SerializeField] private Sprite _attackSprite;
-    
+    [SerializeField] private EnemySpawner _enemySpawner;
+
     private SpriteRenderer _spriteRenderer;
 
 
@@ -99,7 +100,6 @@ public class Player : MonoBehaviour
     {
         interactable.Interact();
 
-
         if (interactable is Earth)
         {
             GameOver?.Invoke();
@@ -110,11 +110,15 @@ public class Player : MonoBehaviour
     {
         _scoreCounter.Reset();
         _playerMover.Reset();
+        _enemySpawner?.Reset();
+        
         transform.position = _startPosition;
         Time.timeScale = 1; 
     }
     private void OnGameOver()
     {
+        _enemySpawner.Reset();
+        _bulletSpawner.Reset();
         Debug.Log("Игра остановлена.");
         Time.timeScale = 0; 
     }
