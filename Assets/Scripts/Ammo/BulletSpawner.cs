@@ -6,9 +6,13 @@ public class BulletSpawner : Spawner<Bullet>
 
     public Transform PoolParent { get; private set; }
 
-    private void Start()
+    protected override void Start()
     {
-        base.Start();   
+        base.Start();
+        if (PoolParent != null)
+        {
+            //_pool.SetParent(PoolParent);
+        }
     }
 
     public Bullet Fire(Vector3 position, bool isPlayerBullet)
@@ -27,7 +31,6 @@ public class BulletSpawner : Spawner<Bullet>
             }
         }
 
-
         return bullet;
     }
 
@@ -36,12 +39,15 @@ public class BulletSpawner : Spawner<Bullet>
         bool isPlayer = GetComponent<Player>() != null;
         int initialSize = isPlayer ? 10 : 2;
 
+       // _pool.SetParent(PoolParent);
         _pool.ResetPool(_prefab, initialSize, _poolMaxSize);
+
         ClearActiveObjects();
     }
 
     public void SetPoolParent(Transform poolParent)
     {
         PoolParent = poolParent;
+        //_pool.SetParent(poolParent);
     }
 }

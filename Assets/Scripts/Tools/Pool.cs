@@ -12,34 +12,40 @@ public class Pool<T> where T : MonoBehaviour
     private int _currentCount;
 
     public int TotalCreated { get; private set; }
-    
     public int ActiveCount => _activeObjects.Count;
-
     public List<T> ActiveObjects => _activeObjects;
 
     public event Action PoolChanged;
 
-    private void Awake()
+    public Pool()
     {
         _deactiveObjects = new Queue<T>();
+        _activeObjects = new List<T>();
     }
 
-  
+    //public void SetParent(Transform parent)
+    //{
+    //    _parent = parent;
+    //}
+
+
     public void Initialize(T prefab, int initialSize, int maxSize)
     {
         _prefab = prefab;
-  
         _maxSize = maxSize;
         _currentCount = 0;
 
-        _deactiveObjects = new Queue<T>();
-        _activeObjects = new List<T>();
+        _deactiveObjects.Clear();
+        _activeObjects.Clear();
 
         for (int i = 0; i < initialSize; i++)
         {
             T obj = Create();
-            obj.gameObject.SetActive(false);
-            _deactiveObjects.Enqueue(obj);
+            if (obj != null)
+            {
+                obj.gameObject.SetActive(false);
+                _deactiveObjects.Enqueue(obj);
+            }
         }
     }
 
@@ -48,14 +54,13 @@ public class Pool<T> where T : MonoBehaviour
         foreach (var obj in _activeObjects)
         {
             obj.gameObject.SetActive(false);
-            _deactiveObjects.Enqueue(obj); 
+            _deactiveObjects.Enqueue(obj);
         }
 
         _activeObjects.Clear();
         PoolChanged?.Invoke();
     }
 
-    
     public T GetPreparedObject()
     {
         if (_deactiveObjects.Count > 0)
@@ -76,44 +81,40 @@ public class Pool<T> where T : MonoBehaviour
             obj.gameObject.SetActive(true);
         }
     }
-    
 
     public T GetObject()
     {
         if (_deactiveObjects.Count > 0)
         {
-            T @object = _deactiveObjects.Dequeue();
-            @object.gameObject.SetActive(true);
-            
-            _activeObjects.Add(@object);
+            T obj = _deactiveObjects.Dequeue();
+            obj.gameObject.SetActive(true);
+
+            _activeObjects.Add(obj);
             PoolChanged?.Invoke();
 
-            return @object;
+            return obj;
         }
 
         return null;
     }
 
-    public void ReleaseObject(T @object)
+    public void ReleaseObject(T obj)
     {
-        if (!_deactiveObjects.Contains(@object))
+        if (!_deactiveObjects.Contains(obj))
         {
-            var enemy = @object as Enemy;
-
-            if (enemy != null)
+            if (obj is Enemy enemy)
             {
                 enemy.CancelInvoke();
                 enemy.transform.position = Vector3.zero;
             }
 
-            @object.gameObject.SetActive(false);
-            _deactiveObjects.Enqueue(@object);
-            _activeObjects.Remove(@object);
+            obj.gameObject.SetActive(false);
+            _deactiveObjects.Enqueue(obj);
+            _activeObjects.Remove(obj);
             PoolChanged?.Invoke();
         }
     }
 
-    // Pool.cs
     public void ResetPool(T newPrefab, int initialSize, int maxSize)
     {
         foreach (var obj in _activeObjects) UnityEngine.Object.Destroy(obj.gameObject);
@@ -130,11 +131,10 @@ public class Pool<T> where T : MonoBehaviour
         if (_currentCount >= _maxSize)
             return null;
 
-        T @object = UnityEngine.Object.Instantiate(_prefab, _parent);
+        T obj = UnityEngine.Object.Instantiate(_prefab, _parent);
         _currentCount++;
-
         TotalCreated++;
 
-        return @object;
+        return obj;
     }
 }

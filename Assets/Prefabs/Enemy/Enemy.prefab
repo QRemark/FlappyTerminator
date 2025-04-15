@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 6365014274450031348}
   - component: {fileID: 5686930988090089455}
   - component: {fileID: 2585028551954478975}
+  - component: {fileID: 6114159871890709433}
+  - component: {fileID: -6093127524067093563}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -164,12 +166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeafa9d3f7802cc489189d1a78a06842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
-  _moveRange: 1.5
-  _defaultSprite: {fileID: 21300000, guid: 6a5f7628af930ab4da8f25309758360e, type: 3}
-  _attackSprite: {fileID: 21300000, guid: f62e6463ead7e154a9a24031ee23bde4, type: 3}
-  _bulletSpawner: {fileID: 6365014274450031348}
-  _followDistance: 5
+  _enemyMover: {fileID: 6114159871890709433}
+  _enemyAttack: {fileID: -6093127524067093563}
 --- !u!114 &6365014274450031348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,7 +182,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefab: {fileID: 2663636567570373978, guid: a7225b07e60db5949a87435de0d0c5d5, type: 3}
   _poolCapacity: 2
-  _poolParent: {fileID: 5338453625790460734}
   _poolMaxSize: 3
   _bulletSprites:
   - {fileID: 21300000, guid: 22faa345d1f36e04c954c7fbbaeeec2d, type: 3}
@@ -299,3 +296,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attackSound: {fileID: 8300000, guid: b9eff218e132a4e76be78840eca96fb2, type: 3}
   _mixerGroup: {fileID: -1127751505019457149, guid: 235a78a9d348c2d4a81e813c4e0d7906, type: 2}
+--- !u!114 &6114159871890709433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7889944982830942416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a289613c04da541b798fdb3a021b1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 2
+  _moveRange: 1.5
+  _lerpSpeed: 1
+  _approachDuration: 1
+  _approachDistanceRange: {x: 6, y: 13}
+  _approachYOffsetRange: {x: -4, y: 4}
+  _followTargetUpdateInterval: 3
+  _followMinDistance: 15
+  _followYOffsetRange: {x: -5, y: 7}
+--- !u!114 &-6093127524067093563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7889944982830942416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4eb04d9cb1c571c4989968ab8c281226, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultSprite: {fileID: 21300000, guid: 6a5f7628af930ab4da8f25309758360e, type: 3}
+  _attackSprite: {fileID: 21300000, guid: f62e6463ead7e154a9a24031ee23bde4, type: 3}
+  _bulletSpawner: {fileID: 6365014274450031348}
+  _attackInterval: 3
+  _attackDistance: 15
+  _spriteResetDelay: 0.5

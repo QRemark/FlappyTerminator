@@ -1,10 +1,12 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerMover), typeof(ScoreCounter), typeof (CollisionHandler))]
+[RequireComponent(typeof(PlayerMover), typeof(ScoreCounter), typeof(CollisionHandler))]
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private Transform _playerBulletPoolParent;
+
     private PlayerMover _playerMover;
     private ScoreCounter _scoreCounter;
     private CollisionHandler _collisionHandler;
@@ -30,6 +32,11 @@ public class Player : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _playerAudio = GetComponent<AttackAudio>();
         _startPosition = transform.position;
+
+        if (_bulletSpawner != null && _playerBulletPoolParent != null)
+        {
+            _bulletSpawner.SetPoolParent(_playerBulletPoolParent);
+        }
     }
 
     private void OnEnable()
@@ -67,12 +74,12 @@ public class Player : MonoBehaviour
     {
         if (_bulletSpawner != null)
         {
-            Vector3 spawnPosition = transform.position + transform.right * 0.5f; 
+            Vector3 spawnPosition = transform.position + transform.right * 0.5f;
             Bullet bullet = _bulletSpawner.Fire(spawnPosition, true);
 
             if (bullet != null)
             {
-                bullet.SetOwner(transform); 
+                bullet.SetOwner(transform);
                 Attack();
             }
         }
@@ -111,15 +118,15 @@ public class Player : MonoBehaviour
         _scoreCounter.Reset();
         _playerMover.Reset();
         _enemySpawner?.Reset();
-        
+
         transform.position = _startPosition;
-        Time.timeScale = 1; 
+        Time.timeScale = 1;
     }
     private void OnGameOver()
     {
         _enemySpawner.Reset();
         _bulletSpawner.Reset();
         Debug.Log("Игра остановлена.");
-        Time.timeScale = 0; 
+        Time.timeScale = 0;
     }
 }
