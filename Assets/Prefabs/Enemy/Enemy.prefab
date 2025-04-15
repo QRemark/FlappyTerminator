@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6365014274450031348}
   - component: {fileID: 5686930988090089455}
   - component: {fileID: 2585028551954478975}
+  - component: {fileID: -5143386075919963717}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -164,12 +165,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeafa9d3f7802cc489189d1a78a06842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
-  _moveRange: 1.5
-  _defaultSprite: {fileID: 21300000, guid: 6a5f7628af930ab4da8f25309758360e, type: 3}
-  _attackSprite: {fileID: 21300000, guid: f62e6463ead7e154a9a24031ee23bde4, type: 3}
-  _bulletSpawner: {fileID: 6365014274450031348}
-  _followDistance: 5
+  speed: 2
+  moveRange: 1.5
+  lerpSpeed: 1
+  approachDuration: 1
+  followMinDistance: 7.28
+  followMaxOffsetY: 7
+  attackRange: 25.6
+  attackRate: 3.04
+  defaultSprite: {fileID: 21300000, guid: 6a5f7628af930ab4da8f25309758360e, type: 3}
+  attackSprite: {fileID: 21300000, guid: f62e6463ead7e154a9a24031ee23bde4, type: 3}
+  bulletSpawner: {fileID: 6365014274450031348}
 --- !u!114 &6365014274450031348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,7 +190,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefab: {fileID: 2663636567570373978, guid: a7225b07e60db5949a87435de0d0c5d5, type: 3}
   _poolCapacity: 2
-  _poolParent: {fileID: 5338453625790460734}
   _poolMaxSize: 3
   _bulletSprites:
   - {fileID: 21300000, guid: 22faa345d1f36e04c954c7fbbaeeec2d, type: 3}
@@ -299,3 +304,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attackSound: {fileID: 8300000, guid: b9eff218e132a4e76be78840eca96fb2, type: 3}
   _mixerGroup: {fileID: -1127751505019457149, guid: 235a78a9d348c2d4a81e813c4e0d7906, type: 2}
+--- !u!114 &-5143386075919963717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7889944982830942416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00ea21509686efc4dbf2e44191572931, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
