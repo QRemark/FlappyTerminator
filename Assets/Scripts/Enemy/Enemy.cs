@@ -24,12 +24,19 @@ public class Enemy : MonoBehaviour, IDisappearable
     private float _currentYOffset;
     private float _targetYOffset;
     private float _movementTimer;
-    private float _lerpSpeed = 1.5f;
+    private float _lerpSpeed = 1.0f;
 
     private bool _isApproaching = false;
     private Vector3 _approachStartPosition;
     private float _approachTime;
     private float _approachDuration = 1f;
+
+    private float _smoothPlayerY;
+
+    private float _minY;
+    private float _maxY;
+
+    private Vector3 _smoothPosition;
 
     public event Action<IDisappearable> Disappeared;
 
@@ -37,17 +44,23 @@ public class Enemy : MonoBehaviour, IDisappearable
     {
         _player = player;
         _bulletPoolParent = poolParent;
-        _timeOffset = UnityEngine.Random.Range(-10f, 10f);
+        _timeOffset = UnityEngine.Random.Range(0, 10f);
 
-        _targetFollowDistance = UnityEngine.Random.Range(6f, 13f);
-        _currentFollowDistance = _targetFollowDistance;
-        _targetYOffset = UnityEngine.Random.Range(-4f, 4f);
-        _currentYOffset = _targetYOffset;
+        _smoothPlayerY = _player.position.y;
+
 
         if (_bulletSpawner != null)
         {
             _bulletSpawner.SetPoolParent(_bulletPoolParent);
         }
+
+        Camera cam = Camera.main;
+        float camHeight = cam.orthographicSize;
+        float camY = cam.transform.position.y;
+
+        _minY = camY - camHeight;
+        _maxY = camY + camHeight-1f;
+        _smoothPosition = transform.position;
     }
 
     private void Awake()
@@ -57,7 +70,6 @@ public class Enemy : MonoBehaviour, IDisappearable
 
     private void OnEnable()
     {
-        Debug.Log($"[ENEMY ENABLED] Position: {transform.position.x}, Player: {_player?.position.x}");
         _isDisappearing = false;
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -72,13 +84,13 @@ public class Enemy : MonoBehaviour, IDisappearable
     {
         _isDisappearing = false;
         CancelInvoke(nameof(FireBullet));
-        _canFollow = false; 
+        _canFollow = false;
     }
 
     private void Update()
     {
         if (_player == null) return;
-       
+
         if (_isApproaching)
         {
             _approachTime += Time.deltaTime;
@@ -96,8 +108,8 @@ public class Enemy : MonoBehaviour, IDisappearable
             {
                 _isApproaching = false;
                 _canFollow = true;
+                _smoothPosition = transform.position;
             }
-
             return;
         }
 
@@ -105,9 +117,12 @@ public class Enemy : MonoBehaviour, IDisappearable
         {
             _movementTimer += Time.deltaTime;
 
+            _smoothPlayerY = Mathf.Lerp(_smoothPlayerY, _player.position.y, Time.deltaTime * 2f);
+
             if (_movementTimer >= 3f)
             {
-                _targetFollowDistance = UnityEngine.Random.Range(6f, 13f);
+                float minDistance = 15f;
+                _targetFollowDistance = UnityEngine.Random.Range(minDistance, minDistance + 10f);
                 _targetYOffset = UnityEngine.Random.Range(-5f, 7f);
                 _movementTimer = 0f;
             }
@@ -124,19 +139,22 @@ public class Enemy : MonoBehaviour, IDisappearable
                 Time.deltaTime * _lerpSpeed
             );
 
-            float pingPongY = Mathf.PingPong(
-                (Time.time + _timeOffset) * _speed,
-                _moveRange
-            );
+            float waveY = Mathf.Sin((Time.time + _timeOffset) * _speed) * _moveRange;
 
-            transform.position = new Vector3(
+            float rawY = _smoothPlayerY + waveY + _currentYOffset;
+
+            float clampedY = Mathf.Clamp(rawY, _minY, _maxY);
+
+            Vector3 targetPos = new Vector3(
                 _player.position.x + _currentFollowDistance,
-                _player.position.y + pingPongY + _currentYOffset,
+                clampedY,
                 0
             );
+
+            _smoothPosition = Vector3.Lerp(_smoothPosition, targetPos, Time.deltaTime * _lerpSpeed);
+            transform.position = _smoothPosition;
         }
     }
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -173,7 +191,9 @@ public class Enemy : MonoBehaviour, IDisappearable
 
     private void FireBullet()
     {
-        if (_bulletSpawner != null)
+        float attackDistance = _smoothPosition.x - _player.position.x;
+
+        if (_bulletSpawner != null && attackDistance < 15)
         {
             Attack();
             Bullet bullet = _bulletSpawner.Fire(transform.position, false);
@@ -192,8 +212,15 @@ public class Enemy : MonoBehaviour, IDisappearable
 
     private void StartFollowing()
     {
+        _targetFollowDistance = UnityEngine.Random.Range(6f, 13f);
+        _currentFollowDistance = _targetFollowDistance;
+        _targetYOffset = UnityEngine.Random.Range(-4f, 4f);
+        _currentYOffset = _targetYOffset;
+
         _isApproaching = true;
         _approachStartPosition = transform.position;
         _approachTime = 0f;
+
+        _smoothPosition = transform.position;
     }
 }

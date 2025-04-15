@@ -43,21 +43,6 @@ public class Pool<T> where T : MonoBehaviour
         }
     }
 
-
-    public void Resize(int newSize)
-    {
-        if (newSize > TotalCreated)
-        {
-            for (int i = TotalCreated; i < newSize; i++)
-            {
-                T newObject = UnityEngine.Object.Instantiate(_prefab);
-                newObject.gameObject.SetActive(false);
-                _deactiveObjects.Enqueue(newObject);
-            }
-            TotalCreated = newSize;
-        }
-    }
-
     public void ClearActiveObjects()
     {
         foreach (var obj in _activeObjects)
@@ -113,12 +98,31 @@ public class Pool<T> where T : MonoBehaviour
     {
         if (!_deactiveObjects.Contains(@object))
         {
+            var enemy = @object as Enemy;
+
+            if (enemy != null)
+            {
+                enemy.CancelInvoke();
+                enemy.transform.position = Vector3.zero;
+            }
+
             @object.gameObject.SetActive(false);
             _deactiveObjects.Enqueue(@object);
-            
             _activeObjects.Remove(@object);
             PoolChanged?.Invoke();
         }
+    }
+
+    // Pool.cs
+    public void ResetPool(T newPrefab, int initialSize, int maxSize)
+    {
+        foreach (var obj in _activeObjects) UnityEngine.Object.Destroy(obj.gameObject);
+        foreach (var obj in _deactiveObjects) UnityEngine.Object.Destroy(obj.gameObject);
+
+        _activeObjects.Clear();
+        _deactiveObjects.Clear();
+
+        Initialize(newPrefab, initialSize, maxSize);
     }
 
     private T Create()

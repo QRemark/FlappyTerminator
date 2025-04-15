@@ -1,14 +1,15 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UIElements;
 
 public class EnemySpawner : Spawner<Enemy>
 {
     [SerializeField] private float _spawnInterval = 4f;
-    [SerializeField] private Vector2 _spawnRangeX = new Vector2(10f, 20f);
-    [SerializeField] private Vector2 _moveRange = new Vector2(0, 0f);
+    [SerializeField] private Vector2 _spawnRangeX = new Vector2(20f, 30f);
+    [SerializeField] private Vector2 _moveRange = new Vector2(-1, 6f);
     [SerializeField] private Transform _player;
     [SerializeField] private Transform _bulletPoolParent;
-    [SerializeField] private float _minDistanceBetweenEnemies = 6f;
+    [SerializeField] private float _minDistanceBetweenEnemies = 10f;
     [SerializeField] private ScoreCounter _scoreCounter;
 
     private List<Vector3> _lastPositions = new List<Vector3>();
@@ -27,10 +28,12 @@ public class EnemySpawner : Spawner<Enemy>
         _poolMaxSize = 3;
         _spawnInterval = 4;
 
+        _pool.ResetPool(_prefab, 2, _poolMaxSize);
+
         foreach (var enemy in _pool.ActiveObjects)
         {
             BulletSpawner bulletSpawner = enemy.GetComponent<BulletSpawner>();
-            
+
             if (bulletSpawner != null)
             {
                 bulletSpawner.Reset();
@@ -45,8 +48,6 @@ public class EnemySpawner : Spawner<Enemy>
 
     private void SpawnEnemy()
     {
-        Debug.Log($"Попытка спавна врага. Активных: {ActiveObjectsCount}, Макс: {_poolMaxSize}");
-
         if (ActiveObjectsCount < _poolMaxSize && _player != null)
         {
             Enemy enemy = GetPreparedObjectFromPool();
@@ -66,7 +67,6 @@ public class EnemySpawner : Spawner<Enemy>
 
 
                 TrackPositions(spawnPosition);
-                Debug.Log("Враг заспавнен!");
             }
         }
     }
@@ -75,19 +75,12 @@ public class EnemySpawner : Spawner<Enemy>
     {
         _scoreCounter?.Add(10);
 
-        if (_poolMaxSize < 5)
-        {
-            _poolMaxSize++;
-
-            _pool.Resize(_poolMaxSize);
-        }
-
         if (_spawnInterval > 1f)
         {
             _spawnInterval -= 0.4f;
-            
+
             CancelInvoke(nameof(SpawnEnemy));
-            
+
             InvokeRepeating(nameof(SpawnEnemy), _spawnInterval, _spawnInterval);
         }
     }
@@ -98,8 +91,10 @@ public class EnemySpawner : Spawner<Enemy>
 
         for (int i = 0; i < maxAttempts; i++)
         {
-            float randomX = Random.Range(_spawnRangeX.x, _spawnRangeX.y);
-            float randomY = Random.Range(_moveRange.x, _moveRange.y);
+            float minDistanceX = Mathf.Max(_minDistanceBetweenEnemies, _spawnRangeX.x);
+            float randomX = Random.Range(minDistanceX, _spawnRangeX.y);
+           
+            float randomY = Random.Range(_minDistanceBetweenEnemies, _moveRange.y);
 
             Vector3 position = new Vector3(
                 _player.position.x + randomX,
@@ -109,11 +104,14 @@ public class EnemySpawner : Spawner<Enemy>
 
             if (IsPositionValid(position))
             {
+                Debug.Log($"Спавн врага: PlayerX={_player.position.x}, SpawnX={position.x}, randomX={randomX}");
                 return position;
             }
+
+            Debug.Log($"Спавн врага: PlayerX={_player.position.x}, SpawnX={position.x}, randomX={randomX}");
         }
 
-        return _player.position + new Vector3(25f, -1, 0);
+        return new Vector3(_player.position.x+ 25f, -1, 0);
     }
 
     private bool IsPositionValid(Vector3 position)

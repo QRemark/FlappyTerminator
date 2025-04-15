@@ -33,6 +33,10 @@ public class BulletSpawner : Spawner<Bullet>
 
     public void Reset()
     {
+        bool isPlayer = GetComponent<Player>() != null;
+        int initialSize = isPlayer ? 10 : 2;
+
+        _pool.ResetPool(_prefab, initialSize, _poolMaxSize);
         ClearActiveObjects();
     }
 

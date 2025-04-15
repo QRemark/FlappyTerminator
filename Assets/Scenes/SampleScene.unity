@@ -3123,11 +3123,11 @@ MonoBehaviour:
   _poolCapacity: 2
   _poolMaxSize: 3
   _spawnInterval: 4
-  _spawnRangeX: {x: 10, y: 20}
-  _moveRange: {x: -3, y: 6}
+  _spawnRangeX: {x: 20, y: 30}
+  _moveRange: {x: -1, y: 6}
   _player: {fileID: 149063612}
   _bulletPoolParent: {fileID: 2010230424}
-  _minDistanceBetweenEnemies: 20
+  _minDistanceBetweenEnemies: 10
   _scoreCounter: {fileID: 149063617}
 --- !u!4 &2010230424
 Transform:
@@ -3137,8 +3137,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2010230422}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 16.03, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

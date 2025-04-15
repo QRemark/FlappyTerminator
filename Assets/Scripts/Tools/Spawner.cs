@@ -16,7 +16,6 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
 
     public event Action CountersUpdated;
 
-    
     protected virtual void Start()
     {
         if (_pool == null)
@@ -35,7 +34,7 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
 
     protected T GetObjectFromPool()
     {
-        T obj = _pool.GetObject();
+        T obj = _pool.GetObject();//SetActive(true)
 
         if (obj == null)
             return null;
@@ -60,8 +59,8 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
 
         return obj;
     }
-
-    protected void ActivateObject(T obj)
+    
+    protected void ActivateObject(T obj)//SetActive(true)
     {
         _pool.ActivateObject(obj);
     }
@@ -77,15 +76,5 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
         disappearedObject.Disappeared -= ReturnObjectInPool;
         _pool.ReleaseObject((T)disappearedObject);
         UpdateCounters();
-    }
-
-    public void Spawn(Vector3 position)
-    {
-        T obj = GetObjectFromPool();
-
-        if (obj != null)
-        {
-            obj.transform.position = position;
-        }
     }
 }
