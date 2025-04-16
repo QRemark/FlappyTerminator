@@ -3,17 +3,26 @@ using UnityEngine;
 public class BulletSpawner : Spawner<Bullet>
 {
     [SerializeField] private Sprite[] _bulletSprites;
+    [SerializeField] private Transform _localPoolParent;
 
     public Transform PoolParent { get; private set; }
 
     protected override void Start()
     {
-        base.Start();
+        _pool = new Pool<Bullet>();
+
+        if (PoolParent == null && _localPoolParent != null)
+            PoolParent = _localPoolParent;
+
         if (PoolParent != null)
-        {
-            //_pool.SetParent(PoolParent);
-        }
+            _pool.SetParent(PoolParent);
+
+        int initialSize = GetComponent<Player>() != null ? 10 : _poolCapacity;
+        _pool.Initialize(_prefab, initialSize, _poolMaxSize);
+        _pool.PoolChanged += UpdateCounters;
     }
+
+
 
     public Bullet Fire(Vector3 position, bool isPlayerBullet)
     {

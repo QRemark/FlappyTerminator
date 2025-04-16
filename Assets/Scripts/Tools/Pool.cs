@@ -23,10 +23,10 @@ public class Pool<T> where T : MonoBehaviour
         _activeObjects = new List<T>();
     }
 
-    //public void SetParent(Transform parent)
-    //{
-    //    _parent = parent;
-    //}
+    public void SetParent(Transform parent)
+    {
+        _parent = parent;
+    }
 
 
     public void Initialize(T prefab, int initialSize, int maxSize)

@@ -858,6 +858,7 @@ MonoBehaviour:
   _bulletSprites:
   - {fileID: 21300000, guid: 654ea6d5b76ecc74492f1f3e5574a3d6, type: 3}
   - {fileID: 21300000, guid: 8dcb574af7576fd48bc7ef85dc2bb72f, type: 3}
+  _localPoolParent: {fileID: 438116150}
 --- !u!212 &149063619
 SpriteRenderer:
   m_ObjectHideFlags: 0
