@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -27,18 +25,18 @@ public class PlayerMover : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _rigidbody2D.velocity = new Vector2(_speed, _tapForce);
-            transform.rotation = _maxRotation;
-        }
-
         transform.rotation = Quaternion.Lerp(transform.rotation, _minRotation, _rotationSpeed * Time.deltaTime);
+    }
+
+    public void Jump()
+    {
+        _rigidbody2D.velocity = new Vector2(_speed, _tapForce);
+        transform.rotation = _maxRotation;
     }
 
     public void Reset()
     {
-        _rigidbody2D.velocity = Vector2.zero; 
+        _rigidbody2D.velocity = Vector2.zero;
         transform.position = _startPosition;
         Debug.Log("Игрок сброшен.");
     }

@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 public class BackgroundLooper : MonoBehaviour
 {
     [SerializeField] private Transform _player;  
-    [SerializeField] private float _speedFactor = 0.9f;
+    [SerializeField] private float _speedFactor = 1.9f;
 
     private float _spriteWidth;
     private Transform[] _backgrounds;
@@ -12,7 +12,6 @@ public class BackgroundLooper : MonoBehaviour
 
     private void Start()
     {
-        
         _backgrounds = new Transform[3];
 
         for (int i = 0; i < _backgrounds.Length; i++)
@@ -36,7 +35,7 @@ public class BackgroundLooper : MonoBehaviour
 
         foreach (var bg in _backgrounds)
         {
-            if (bg.position.x < _player.position.x - _spriteWidth * 1.5f)
+            if (bg.position.x < _player.position.x - _spriteWidth * 1.1f)
             {
                 MoveBackgroundToRight(bg);
             }

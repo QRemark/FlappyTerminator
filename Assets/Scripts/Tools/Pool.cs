@@ -41,6 +41,7 @@ public class Pool<T> where T : MonoBehaviour
         for (int i = 0; i < initialSize; i++)
         {
             T obj = Create();
+
             if (obj != null)
             {
                 obj.gameObject.SetActive(false);
@@ -68,6 +69,7 @@ public class Pool<T> where T : MonoBehaviour
             T obj = _deactiveObjects.Dequeue();
             _activeObjects.Add(obj);
             PoolChanged?.Invoke();
+
             return obj;
         }
 

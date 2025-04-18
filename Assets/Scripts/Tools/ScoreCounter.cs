@@ -6,6 +6,9 @@ public class ScoreCounter : MonoBehaviour
     [SerializeField] private ScoreView _scoreView;
     
     private int _score;
+    private int _topScroresCount = 5;
+    private int _point = 10;
+    private int _resetScore = 0;
 
     private List<int> _topScores = new List<int>();
 
@@ -19,28 +22,27 @@ public class ScoreCounter : MonoBehaviour
 
     private void OnEnemyDisappeared(IDisappearable disappearable)
     {
-        Add(10);
+        Add(_point);
     }
 
     public void Add(int points)
     {
         _score += points;
         _scoreView.UpdateScore(_score);
-        Debug.Log($"ќчки: {_score}");
     }
 
     public void Reset()
     {
-        _score = 0;
+        _score = _resetScore;
         _scoreView.UpdateScore(_score);
-        Debug.Log("—чЄт сброшен.");
     }
     public void SaveScore()
     {
         _topScores.Add(_score);
-        _topScores.Sort((a, b) => b.CompareTo(a)); 
-        if (_topScores.Count > 5)
-            _topScores.RemoveAt(5); 
+        _topScores.Sort((current, newScore) => newScore.CompareTo(current)); 
+
+        if (_topScores.Count > _topScroresCount)
+            _topScores.RemoveAt(_topScroresCount); 
     }
 
     public List<int> GetTopScores()
