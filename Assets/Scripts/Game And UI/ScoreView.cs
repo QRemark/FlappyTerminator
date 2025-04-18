@@ -8,10 +8,12 @@ public class ScoreView : MonoBehaviour
 
     private int _currentScore;
 
+    private string _scoreTextFormat = "—чет: ";
+
     public void UpdateScore(int score)
     {
         _currentScore = score;
-        _scoreText.text = $"—чет: {_currentScore}";
+        _scoreText.text = $"{_scoreTextFormat}{_currentScore}";
     }
 
     public void Show()

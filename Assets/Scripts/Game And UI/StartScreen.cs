@@ -1,21 +1,21 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class StartScreen : Window
 {
+    private float _closeAlpha = 0f;
+    private float _openAlpha = 1f;
+
     public event Action PlayButtonClicked;
 
     public override void Close()
     {
-        WindowGroup.alpha = 0f;
+        WindowGroup.alpha = _closeAlpha;
         ActionButton.interactable = false;
     }
 
     public override void Open()
     {
-        WindowGroup.alpha = 1f;
+        WindowGroup.alpha = _openAlpha;
         ActionButton.interactable = true;
     }
 

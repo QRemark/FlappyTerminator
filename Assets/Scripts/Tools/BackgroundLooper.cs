@@ -1,25 +1,29 @@
 ﻿using UnityEngine;
-using UnityEngine.UIElements;
 
 public class BackgroundLooper : MonoBehaviour
 {
     [SerializeField] private Transform _player;  
     [SerializeField] private float _speedFactor = 1.9f;
 
+    private int _backgroundCount = 3; 
+    private int _initialIndex = 0;
+
     private float _spriteWidth;
+    private float _repositionMultiplier= 1.1f;
+
     private Transform[] _backgrounds;
     private Vector3 _lastPlayerPosition;
 
     private void Start()
     {
-        _backgrounds = new Transform[3];
+        _backgrounds = new Transform[_backgroundCount];
 
         for (int i = 0; i < _backgrounds.Length; i++)
         {
             _backgrounds[i] = transform.GetChild(i);
         }
         
-        _spriteWidth = _backgrounds[0].GetComponent<SpriteRenderer>().bounds.size.x;
+        _spriteWidth = _backgrounds[_initialIndex].GetComponent<SpriteRenderer>().bounds.size.x;
 
         _lastPlayerPosition = _player.position;
     }
@@ -35,19 +39,18 @@ public class BackgroundLooper : MonoBehaviour
 
         foreach (var bg in _backgrounds)
         {
-            if (bg.position.x < _player.position.x - _spriteWidth * 1.1f)
+            if (bg.position.x < _player.position.x - _spriteWidth * _repositionMultiplier)
             {
                 MoveBackgroundToRight(bg);
             }
         }
-
 
         _lastPlayerPosition = _player.position;
     }
 
     private void MoveBackgroundToRight(Transform bg)
     {
-        Transform rightmost = _backgrounds[0];
+        Transform rightmost = _backgrounds[_initialIndex];
 
         foreach (var background in _backgrounds)
         {

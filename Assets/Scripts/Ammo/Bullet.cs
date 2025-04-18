@@ -12,6 +12,7 @@ public class Bullet : MonoBehaviour, IDisappearable
 
     private LayerMask _targetLayer;
 
+    private float _localScaleModificator = 0.2f;
 
     private SpriteRenderer _spriteRenderer;
 
@@ -87,7 +88,8 @@ public class Bullet : MonoBehaviour, IDisappearable
         if (_spriteRenderer != null)
         {
             _spriteRenderer.sprite = sprite;
-            transform.localScale = new Vector3(0.2f, 0.2f, 1f);
+            transform.localScale = new Vector3(_localScaleModificator, 
+                _localScaleModificator, 1f);
         }
     }
 

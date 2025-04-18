@@ -12,13 +12,17 @@ public class Enemy : MonoBehaviour, IDisappearable
     private float _timeOffset;
     private bool _isDisappearing;
 
+    private float _timeOffsetMin = 0f;
+    private float _timeOffsetMax = 10f;
+    private float _localScaleModificator = 0.35f;
+
     public event Action<IDisappearable> Disappeared;
 
     public void Initialize(Transform player, Transform poolParent)
     {
         _player = player;
         _bulletPoolParent = poolParent;
-        _timeOffset = UnityEngine.Random.Range(0f, 10f);
+        _timeOffset = UnityEngine.Random.Range(_timeOffsetMin, _timeOffsetMax);
 
         _enemyMover.Setup(_player, _timeOffset);
         _enemyMover.OnApproachComplete = _enemyAttack.EnableAttack;
@@ -29,7 +33,7 @@ public class Enemy : MonoBehaviour, IDisappearable
     private void OnEnable()
     {
         _isDisappearing = false;
-        transform.localScale = new Vector3(0.35f, 0.35f, 1f);
+        transform.localScale = new Vector3(_localScaleModificator, _localScaleModificator, 1f);
 
         _enemyMover.ResetState();
         _enemyAttack.ResetState();

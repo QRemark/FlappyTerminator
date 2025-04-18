@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Game : MonoBehaviour
@@ -10,6 +7,7 @@ public class Game : MonoBehaviour
     [SerializeField] private RestartScreen _restartScreen;
     [SerializeField] private BackgroundMusic _backgroundMusic;
     [SerializeField] private ScoreView _scoreView;
+    [SerializeField] private GameObject _bulletBarContainer;
 
     private void OnEnable()
     {
@@ -27,6 +25,7 @@ public class Game : MonoBehaviour
     {
         Time.timeScale = 0;
         _scoreView.Hide();
+        _bulletBarContainer.SetActive(false);
         _startScreen.Open();
     }
 
@@ -48,13 +47,14 @@ public class Game : MonoBehaviour
         _player.Reset();
         _scoreView.Show();
         _backgroundMusic.PlayMusic();
+        _bulletBarContainer.SetActive(true);
     }
 
     private void OnGameOver()
     {
-        Debug.Log("Показываем экран рестарта...");
         _backgroundMusic.StopMusic();
         _scoreView.Hide();
+        _bulletBarContainer.SetActive(false);
         _restartScreen.Open();
     }
 }

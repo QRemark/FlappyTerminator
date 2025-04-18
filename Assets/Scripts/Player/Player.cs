@@ -80,7 +80,6 @@ public class Player : MonoBehaviour
     {
         _enemySpawner.Reset();
         _bulletSpawner.Reset();
-        Debug.Log("Игра остановлена.");
         Time.timeScale = 0;
     }
 }

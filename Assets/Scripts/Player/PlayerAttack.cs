@@ -6,6 +6,9 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Sprite _defaultSprite;
     [SerializeField] private BulletSpawner _bulletSpawner;
     [SerializeField] private Transform _bulletSpawnPoint;
+    [SerializeField] private BulletBar _bulletBar;
+
+    private float _attackSpriteDuration = 0.5f;
 
     private AttackAudio _attackAudio;
     private SpriteRenderer _spriteRenderer;
@@ -14,6 +17,12 @@ public class PlayerAttack : MonoBehaviour
     {
         _attackAudio = GetComponent<AttackAudio>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void Start()
+    {
+        if (_bulletBar != null && _bulletSpawner != null)
+            _bulletBar.Initialize(_bulletSpawner);
     }
 
     public void Attack()
@@ -36,7 +45,7 @@ public class PlayerAttack : MonoBehaviour
         {
             _spriteRenderer.sprite = _attackSprite;
             _attackAudio?.AttackSound();
-            Invoke(nameof(ResetSprite), 0.5f);
+            Invoke(nameof(ResetSprite), _attackSpriteDuration);
         }
     }
 

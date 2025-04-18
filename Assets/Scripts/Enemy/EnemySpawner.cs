@@ -7,6 +7,7 @@ public class EnemySpawner : Spawner<Enemy>
     [SerializeField] private Transform _bulletPoolParent;
     [SerializeField] private ScoreCounter _scoreCounter;
     [SerializeField] private Transform _enemyPoolParent;
+    [SerializeField] private int _initialPoolSize = 5;
 
     private ISpawnPositionProvider _positionProvider;
     private ISpawnDifficultyScaler _difficultyScaler;
@@ -15,7 +16,7 @@ public class EnemySpawner : Spawner<Enemy>
     private float _initialSpawnInterval = 4f; 
     private float _movementDelay = 0.01f; 
     private int _pointsPerEnemy = 10; 
-    private int _initialPoolSize = 2;
+    //private int _initialPoolSize = 5;
 
     private float _minX = 20f;
     private float _maxX = 30f;
@@ -35,9 +36,11 @@ public class EnemySpawner : Spawner<Enemy>
             minDistance: _minDistance
         );
 
-        _difficultyScaler = new SpawnDifficultyScaler(_initialSpawnInterval, _minSpamInterwal, _spamInterval);
+        _difficultyScaler = new SpawnDifficultyScaler(_initialSpawnInterval, 
+            _minSpamInterwal, _spamInterval);
 
-        InvokeRepeating(nameof(SpawnEnemy), _difficultyScaler.CurrentInterval, _difficultyScaler.CurrentInterval);
+        InvokeRepeating(nameof(SpawnEnemy), _difficultyScaler.CurrentInterval, 
+            _difficultyScaler.CurrentInterval);
     }
 
     public void Reset()
@@ -86,6 +89,7 @@ public class EnemySpawner : Spawner<Enemy>
     private void RestartSpawnCycle()
     {
         CancelInvoke(nameof(SpawnEnemy));
-        InvokeRepeating(nameof(SpawnEnemy), _difficultyScaler.CurrentInterval, _difficultyScaler.CurrentInterval);
+        InvokeRepeating(nameof(SpawnEnemy), _difficultyScaler.CurrentInterval, 
+            _difficultyScaler.CurrentInterval);
     }
 }

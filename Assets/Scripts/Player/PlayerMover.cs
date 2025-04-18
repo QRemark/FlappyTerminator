@@ -25,7 +25,8 @@ public class PlayerMover : MonoBehaviour
 
     private void Update()
     {
-        transform.rotation = Quaternion.Lerp(transform.rotation, _minRotation, _rotationSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, _minRotation, 
+            _rotationSpeed * Time.deltaTime);
     }
 
     public void Jump()
@@ -38,6 +39,5 @@ public class PlayerMover : MonoBehaviour
     {
         _rigidbody2D.velocity = Vector2.zero;
         transform.position = _startPosition;
-        Debug.Log("Игрок сброшен.");
     }
 }

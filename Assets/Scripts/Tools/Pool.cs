@@ -35,6 +35,8 @@ public class Pool<T> where T : MonoBehaviour
         _maxSize = maxSize;
         _currentCount = 0;
 
+        TotalCreated = 0;
+
         _deactiveObjects.Clear();
         _activeObjects.Clear();
 

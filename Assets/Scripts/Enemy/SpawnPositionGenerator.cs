@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class SpawnPositionGenerator : ISpawnPositionProvider
 {
+    private const int _defaultMaxTrackedPositions = 5;
     private readonly Vector2 _spawnRangeX;
     private readonly Vector2 _spawnRangeY;
     private readonly float _minDistance;
@@ -14,7 +15,8 @@ public class SpawnPositionGenerator : ISpawnPositionProvider
 
     private readonly List<Vector3> _trackedPositions = new();
 
-    public SpawnPositionGenerator(Vector2 spawnRangeX, Vector2 spawnRangeY, float minDistance, int maxTracked = 5)
+    public SpawnPositionGenerator(Vector2 spawnRangeX, Vector2 spawnRangeY, 
+        float minDistance, int maxTracked = _defaultMaxTrackedPositions)
     {
         _spawnRangeX = spawnRangeX;
         _spawnRangeY = spawnRangeY;
@@ -26,7 +28,8 @@ public class SpawnPositionGenerator : ISpawnPositionProvider
     {
         for (int i = 0; i < _maxAttempts; i++)
         {
-            float randomX = Random.Range(Mathf.Max(_minDistance, _spawnRangeX.x), _spawnRangeX.y);
+            float randomX = Random.Range(Mathf.Max(_minDistance, _spawnRangeX.x), 
+                _spawnRangeX.y);
             float randomY = Random.Range(_spawnRangeY.x, _spawnRangeY.y);
 
             Vector3 pos = new(player.position.x + randomX, player.position.y + randomY, 0);
@@ -40,6 +43,7 @@ public class SpawnPositionGenerator : ISpawnPositionProvider
 
         Vector3 fallback = new(player.position.x + _fallbackOffsetX, _fallbackY, 0);
         Track(fallback);
+
         return fallback;
     }
 
@@ -50,6 +54,7 @@ public class SpawnPositionGenerator : ISpawnPositionProvider
             if (Vector3.Distance(tracked, position) < _minDistance)
                 return false;
         }
+
         return true;
     }
 

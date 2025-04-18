@@ -26,6 +26,7 @@ public class EnemyMover : MonoBehaviour
 
     private float _smoothPlayerY;
     private Vector3 _smoothPosition;
+    private float _ySmoothSpeed = 2f;
 
     private float _movementTimer;
     private float _targetFollowDistance;
@@ -36,6 +37,9 @@ public class EnemyMover : MonoBehaviour
     private bool _isApproaching;
     private float _approachTime;
     private Vector3 _approachStartPosition;
+
+    private float _camMaxHeightLower = 2f;
+    private float _normalTimeMax = 1f;
 
     private bool _canFollow;
 
@@ -48,7 +52,7 @@ public class EnemyMover : MonoBehaviour
         var camY = cam.transform.position.y;
 
         _minY = camY - camHeight;
-        _maxY = camY + camHeight - 1f;
+        _maxY = camY + camHeight - _camMaxHeightLower;
     }
 
     public void Setup(Transform player, float timeOffset)
@@ -95,12 +99,12 @@ public class EnemyMover : MonoBehaviour
     private void HandleApproach()
     {
         _approachTime += Time.deltaTime;
-        float t = Mathf.Clamp01(_approachTime / _approachDuration);
+        float time = Mathf.Clamp01(_approachTime / _approachDuration);
 
         Vector3 targetPosition = GetApproachTargetPosition();
-        transform.position = Vector3.Lerp(_approachStartPosition, targetPosition, t);
+        transform.position = Vector3.Lerp(_approachStartPosition, targetPosition, time);
 
-        if (t >= 1f)
+        if (time >= _normalTimeMax)
         {
             _isApproaching = false;
             _canFollow = true;
@@ -113,7 +117,8 @@ public class EnemyMover : MonoBehaviour
     {
         _movementTimer += Time.deltaTime;
 
-        _smoothPlayerY = Mathf.Lerp(_smoothPlayerY, _player.position.y, Time.deltaTime * 2f);
+        _smoothPlayerY = Mathf.Lerp(_smoothPlayerY, _player.position.y, 
+            Time.deltaTime * _ySmoothSpeed);
 
         if (_movementTimer >= _followTargetUpdateInterval)
         {
@@ -165,10 +170,5 @@ public class EnemyMover : MonoBehaviour
             _player.position.y + _currentYOffset,
             0f
         );
-    }
-
-    public Vector3 GetSmoothPosition()
-    {
-        return _smoothPosition;
     }
 }
