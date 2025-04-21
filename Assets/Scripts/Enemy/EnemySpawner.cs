@@ -16,7 +16,6 @@ public class EnemySpawner : Spawner<Enemy>
     private float _initialSpawnInterval = 4f; 
     private float _movementDelay = 0.01f; 
     private int _pointsPerEnemy = 10; 
-    //private int _initialPoolSize = 5;
 
     private float _minX = 20f;
     private float _maxX = 30f;

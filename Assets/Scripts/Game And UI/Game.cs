@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class Game : MonoBehaviour
 {
@@ -8,17 +9,24 @@ public class Game : MonoBehaviour
     [SerializeField] private BackgroundMusic _backgroundMusic;
     [SerializeField] private ScoreView _scoreView;
     [SerializeField] private GameObject _bulletBarContainer;
+    [SerializeField] private PauseScreen _pauseScreen;
+
+    private bool _isPaused = false;
 
     private void OnEnable()
     {
         _startScreen.PlayButtonClicked += OnPlayButtonClicked;
         _restartScreen.RestartButtonClicked += OnRestartButtonClicked;
         _player.GameOver += OnGameOver;
+        _pauseScreen.ResumeButtonClicked += ResumeGame;
+        InputEvents.PauseRequested += TogglePause;
     }
 
     private void OnDisable()
     {
         _player.GameOver -= OnGameOver;
+        _pauseScreen.ResumeButtonClicked -= ResumeGame;
+        InputEvents.PauseRequested -= TogglePause;
     }
 
     private void Start()
@@ -27,6 +35,45 @@ public class Game : MonoBehaviour
         _scoreView.Hide();
         _bulletBarContainer.SetActive(false);
         _startScreen.Open();
+        _pauseScreen.Close();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && !_restartScreen.isActiveAndEnabled && !_startScreen.isActiveAndEnabled)
+        {
+            if (!_isPaused)
+                PauseGame();
+            else
+                ResumeGame();
+        }
+    }
+
+    private void TogglePause()
+    {
+        if (_startScreen.WindowGroup.alpha > 0f || _restartScreen.WindowGroup.alpha > 0f)
+            return;
+
+        if (!_isPaused)
+            PauseGame();
+        else
+            ResumeGame();
+    }
+
+    private void PauseGame()
+    {
+        _isPaused = true;
+        Time.timeScale = 0f;
+        _backgroundMusic.PauseMusic();
+        _pauseScreen.Open();
+    }
+
+    private void ResumeGame()
+    {
+        _isPaused = false;
+        Time.timeScale = 1f;
+        _backgroundMusic.ContinueMusic();
+        _pauseScreen.Close();
     }
 
     private void OnRestartButtonClicked()
@@ -58,3 +105,4 @@ public class Game : MonoBehaviour
         _restartScreen.Open();
     }
 }
+
