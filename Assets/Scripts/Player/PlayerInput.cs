@@ -8,6 +8,7 @@ public class PlayerInput : MonoBehaviour
 
     private KeyCode _jumpKey = KeyCode.Space;
     private KeyCode _attackKey = KeyCode.V;
+    private KeyCode _restartKey = KeyCode.Z;
 
     private KeyCode _pauseKey = KeyCode.Escape;
 
@@ -17,7 +18,7 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKeyDown(_attackKey)) AttackRequested?.Invoke();
         if (Input.GetKeyDown(_pauseKey)) InputEvents.RaisePause();
 
-        if (Input.GetKeyDown(_pauseKey))
+        if (Input.GetKeyDown(_restartKey))
         {
             InputEvents.RaiseRestart();
         }

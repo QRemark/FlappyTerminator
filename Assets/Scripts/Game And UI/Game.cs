@@ -86,6 +86,7 @@ public class Game : MonoBehaviour
     {
         _restartScreen.Close();
         _pauseScreen.gameObject.SetActive(true);
+        _pauseScreen.Close();
         StartGame();
     }
 
