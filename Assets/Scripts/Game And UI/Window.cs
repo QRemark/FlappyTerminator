@@ -6,6 +6,9 @@ public abstract class Window : MonoBehaviour
     [SerializeField] private CanvasGroup _windowGroup;
     [SerializeField] private Button _actionButton;
 
+    private float _closeAlpha = 0f;
+    private float _openAlpha = 1f;
+
     public CanvasGroup WindowGroup => _windowGroup;
     protected Button ActionButton => _actionButton;
 
@@ -19,9 +22,22 @@ public abstract class Window : MonoBehaviour
         _actionButton.onClick.RemoveListener(OnButtonClick);
     }
 
-    public abstract void Close();
+    public virtual void Close()
+    {
+        _windowGroup.alpha = _closeAlpha;
+        _windowGroup.interactable = false;
+        _windowGroup.blocksRaycasts = false;
+        _actionButton.interactable = false;
+    }
 
-    public abstract void Open();
+    public virtual void Open()
+    {
+        gameObject.SetActive(true);
+        _windowGroup.alpha = _openAlpha;
+        _windowGroup.interactable = true;
+        _windowGroup.blocksRaycasts = true;
+        _actionButton.interactable = true;
+    }
 
     public abstract void OnButtonClick();    
 }

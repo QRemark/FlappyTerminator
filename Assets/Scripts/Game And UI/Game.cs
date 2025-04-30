@@ -10,6 +10,7 @@ public class Game : MonoBehaviour
     [SerializeField] private ScoreView _scoreView;
     [SerializeField] private GameObject _bulletBarContainer;
     [SerializeField] private PauseScreen _pauseScreen;
+    [SerializeField] private BackgroundLooper _backgroundLooper;
 
     private bool _isPaused = false;
 
@@ -31,12 +32,16 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
+        _startScreen.gameObject.SetActive(true);
+        _restartScreen.gameObject.SetActive(false); 
+        _pauseScreen.gameObject.SetActive(false); 
+
         Time.timeScale = 0;
         _scoreView.Hide();
         _bulletBarContainer.SetActive(false);
         _startScreen.Open();
-        _pauseScreen.Close();
     }
+
 
     private void Update()
     {
@@ -62,6 +67,7 @@ public class Game : MonoBehaviour
 
     private void PauseGame()
     {
+        _pauseScreen.gameObject.SetActive(true);
         _isPaused = true;
         Time.timeScale = 0f;
         _backgroundMusic.PauseMusic();
@@ -79,6 +85,7 @@ public class Game : MonoBehaviour
     private void OnRestartButtonClicked()
     {
         _restartScreen.Close();
+        _pauseScreen.gameObject.SetActive(true);
         StartGame();
     }
 
@@ -92,6 +99,7 @@ public class Game : MonoBehaviour
     {
         Time.timeScale = 1;
         _player.Reset();
+        _backgroundLooper.ResetBackground();
         _scoreView.Show();
         _backgroundMusic.PlayMusic();
         _bulletBarContainer.SetActive(true);
@@ -99,6 +107,7 @@ public class Game : MonoBehaviour
 
     private void OnGameOver()
     {
+        _restartScreen.gameObject.SetActive(true);
         _backgroundMusic.StopMusic();
         _scoreView.Hide();
         _bulletBarContainer.SetActive(false);

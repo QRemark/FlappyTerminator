@@ -48,6 +48,20 @@ public class BackgroundLooper : MonoBehaviour
         _lastPlayerPosition = _player.position;
     }
 
+    public void ResetBackground()
+    {
+        for (int i = 0; i < _backgrounds.Length; i++)
+        {
+            _backgrounds[i].position = new Vector3(
+                _player.position.x + _spriteWidth * (i - _initialIndex),
+                _backgrounds[i].position.y,
+                _backgrounds[i].position.z);
+        }
+
+        _lastPlayerPosition = _player.position;
+    }
+
+
     private void MoveBackgroundToRight(Transform bg)
     {
         Transform rightmost = _backgrounds[_initialIndex];

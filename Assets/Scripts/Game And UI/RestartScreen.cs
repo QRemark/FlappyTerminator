@@ -10,26 +10,34 @@ public class RestartScreen  : Window
     [SerializeField] private ScoreCounter _scoreCounter;
     [SerializeField] private TMP_Text _topScoresText;
 
-    private float _closeAlpha = 0f;
-    private float _openAlpha = 1f;
-
     private string _topScoresTextFormat = "Топ 5 очков:\n\n";
 
-    public override void Close()
+    private void OnEnable()
     {
-        WindowGroup.alpha = _closeAlpha;
-        ActionButton.interactable = false;
+        InputEvents.RestartRequested += OnSpaceRestart;
     }
+
+    private void OnDisable()
+    {
+        InputEvents.RestartRequested -= OnSpaceRestart;
+    }
+
+    private void OnSpaceRestart()
+    {
+        if (!WindowGroup.interactable)
+            return;
+
+        RestartButtonClicked?.Invoke();
+    }
+
 
     public override void Open()
     {
-        WindowGroup.alpha = _openAlpha;
-        ActionButton.interactable = true;
-
-        _scoreCounter.SaveScore(); 
-
+        base.Open();
+        _scoreCounter.SaveScore();
         ShowTopScores();
     }
+
 
     private void ShowTopScores()
     {
