@@ -34,7 +34,7 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
 
     protected T GetObjectFromPool()
     {
-        T obj = _pool.GetObject();//SetActive(true)
+        T obj = _pool.GetObject();
 
         if (obj == null)
             return null;
@@ -60,12 +60,11 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
         return obj;
     }
     
-    protected void ActivateObject(T obj)//SetActive(true)
+    protected void ActivateObject(T obj)
     {
         _pool.ActivateObject(obj);
     }
     
-
     protected virtual void UpdateCounters()
     {
         CountersUpdated?.Invoke();

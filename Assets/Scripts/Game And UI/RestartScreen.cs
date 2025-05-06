@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -11,28 +10,39 @@ public class RestartScreen  : Window
     [SerializeField] private ScoreCounter _scoreCounter;
     [SerializeField] private TMP_Text _topScoresText;
 
-    public override void Close()
+    private string _topScoresTextFormat = "Топ 5 очков:\n\n";
+
+    private void OnEnable()
     {
-        WindowGroup.alpha = 0f;
-        ActionButton.interactable = false;
+        InputEvents.RestartRequested += OnSpaceRestart;
     }
+
+    private void OnDisable()
+    {
+        InputEvents.RestartRequested -= OnSpaceRestart;
+    }
+
+    private void OnSpaceRestart()
+    {
+        if (!WindowGroup.interactable)
+            return;
+
+        RestartButtonClicked?.Invoke();
+    }
+
 
     public override void Open()
     {
-        WindowGroup.alpha = 1f;
-        ActionButton.interactable = true;
-
-        _scoreCounter.SaveScore(); 
-
+        base.Open();
+        _scoreCounter.SaveScore();
         ShowTopScores();
-
-        Debug.Log("Экран рестарта открыт");
     }
+
 
     private void ShowTopScores()
     {
         List<int> topScores = _scoreCounter.GetTopScores();
-        _topScoresText.text = "Топ 5 очков:\n\n";
+        _topScoresText.text = _topScoresTextFormat;
 
         for (int i = 0; i < topScores.Count; i++)
         {

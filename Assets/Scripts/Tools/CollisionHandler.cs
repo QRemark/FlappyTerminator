@@ -16,7 +16,6 @@ public class CollisionHandler : MonoBehaviour
         if (collision.TryGetComponent(out IInteractable interactable))
         {
             CollisionDetected?.Invoke(interactable);
-            Debug.Log("Collision detected");
         }
     }
 }

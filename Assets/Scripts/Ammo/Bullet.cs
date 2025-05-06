@@ -12,12 +12,15 @@ public class Bullet : MonoBehaviour, IDisappearable
 
     private LayerMask _targetLayer;
 
-
     private SpriteRenderer _spriteRenderer;
 
+    private float _localScaleModificator = 0.2f;
     private float _lifeTimer;
 
     private Transform _owner;
+
+    private string _targetPlayer = "PlayerBullet";
+    private string _targetEnemy = "EnemyBullet";
 
     private void Awake()
     {
@@ -62,7 +65,7 @@ public class Bullet : MonoBehaviour, IDisappearable
 
     public void Initialize(bool isPlayerBullet)
     {
-        string targetLayer = isPlayerBullet ? "PlayerBullet" : "EnemyBullet";
+        string targetLayer = isPlayerBullet ? _targetPlayer : _targetEnemy;
         int layerIndex = LayerMask.NameToLayer(targetLayer);
 
         gameObject.layer = layerIndex;
@@ -87,7 +90,8 @@ public class Bullet : MonoBehaviour, IDisappearable
         if (_spriteRenderer != null)
         {
             _spriteRenderer.sprite = sprite;
-            transform.localScale = new Vector3(0.2f, 0.2f, 1f);
+            transform.localScale = new Vector3(_localScaleModificator, 
+                _localScaleModificator, 1f);
         }
     }
 
