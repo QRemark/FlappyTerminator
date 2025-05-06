@@ -12,8 +12,6 @@ public class ScoreCounter : MonoBehaviour
 
     private List<int> _topScores = new List<int>();
 
-    public int CurrentScore => _score;
-
     public void RegisterEnemy(Enemy enemy)
     {
         enemy.Disappeared -= OnEnemyDisappeared;
@@ -36,6 +34,7 @@ public class ScoreCounter : MonoBehaviour
         _score = _resetScore;
         _scoreView.UpdateScore(_score);
     }
+
     public void SaveScore()
     {
         _topScores.Add(_score);

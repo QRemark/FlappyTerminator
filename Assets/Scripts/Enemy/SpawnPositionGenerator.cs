@@ -32,16 +32,17 @@ public class SpawnPositionGenerator : ISpawnPositionProvider
                 _spawnRangeX.y);
             float randomY = Random.Range(_spawnRangeY.x, _spawnRangeY.y);
 
-            Vector3 pos = new(player.position.x + randomX, player.position.y + randomY, 0);
+            Vector3 position = new(player.position.x + randomX, player.position.y + randomY, 0);
 
-            if (IsFarEnough(pos))
+            if (IsFarEnough(position))
             {
-                Track(pos);
-                return pos;
+                Track(position);
+                return position;
             }
         }
 
         Vector3 fallback = new(player.position.x + _fallbackOffsetX, _fallbackY, 0);
+
         Track(fallback);
 
         return fallback;

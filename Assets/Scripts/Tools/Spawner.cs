@@ -65,7 +65,6 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
         _pool.ActivateObject(obj);
     }
     
-
     protected virtual void UpdateCounters()
     {
         CountersUpdated?.Invoke();

@@ -45,6 +45,7 @@ public class PlayerAttack : MonoBehaviour
         {
             _spriteRenderer.sprite = _attackSprite;
             _attackAudio?.AttackSound();
+
             Invoke(nameof(ResetSprite), _attackSpriteDuration);
         }
     }

@@ -71,8 +71,10 @@ public class EnemyMover : MonoBehaviour
 
     public void StartFollowing()
     {
-        _targetFollowDistance = UnityEngine.Random.Range(_approachDistanceRange.x, _approachDistanceRange.y);
-        _targetYOffset = UnityEngine.Random.Range(_approachYOffsetRange.x, _approachYOffsetRange.y);
+        _targetFollowDistance = UnityEngine.Random.Range(_approachDistanceRange.x, 
+            _approachDistanceRange.y);
+        _targetYOffset = UnityEngine.Random.Range(_approachYOffsetRange.x, 
+            _approachYOffsetRange.y);
 
         _currentFollowDistance = _targetFollowDistance;
         _currentYOffset = _targetYOffset;

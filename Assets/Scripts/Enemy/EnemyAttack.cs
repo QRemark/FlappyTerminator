@@ -58,7 +58,9 @@ public class EnemyAttack : MonoBehaviour
         if (distanceToPlayer < _attackDistance)
         {
             PlayAttackVisual();
+
             Bullet bullet = _bulletSpawner.Fire(transform.position, false);
+
             if (bullet != null)
             {
                 bullet.SetOwner(transform);
@@ -72,6 +74,7 @@ public class EnemyAttack : MonoBehaviour
         {
             _spriteRenderer.sprite = _attackSprite;
             _enemyAudio?.AttackSound();
+
             Invoke(nameof(ResetSprite), _spriteResetDelay);
         }
     }

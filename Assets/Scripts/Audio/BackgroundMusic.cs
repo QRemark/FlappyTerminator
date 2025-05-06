@@ -6,6 +6,7 @@ public class BackgroundMusic : MonoBehaviour
 {
     [SerializeField] private AudioClip _musicClip;
     [SerializeField] private AudioMixerGroup _musicGroup;
+
     private AudioSource _audioSource;
     
     private void Awake()

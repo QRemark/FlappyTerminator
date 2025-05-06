@@ -28,7 +28,6 @@ public class Pool<T> where T : MonoBehaviour
         _parent = parent;
     }
 
-
     public void Initialize(T prefab, int initialSize, int maxSize)
     {
         _prefab = prefab;

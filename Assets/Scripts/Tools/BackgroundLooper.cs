@@ -12,6 +12,7 @@ public class BackgroundLooper : MonoBehaviour
     private float _repositionMultiplier= 1.1f;
 
     private Transform[] _backgrounds;
+
     private Vector3 _lastPlayerPosition;
 
     private void Start()
@@ -32,16 +33,16 @@ public class BackgroundLooper : MonoBehaviour
     {
         float playerDeltaX = _player.position.x - _lastPlayerPosition.x;
 
-        foreach (var bg in _backgrounds)
+        foreach (var picture in _backgrounds)
         {
-            bg.position += Vector3.right * playerDeltaX * _speedFactor;
+            picture.position += Vector3.right * playerDeltaX * _speedFactor;
         }
 
-        foreach (var bg in _backgrounds)
+        foreach (var picture in _backgrounds)
         {
-            if (bg.position.x < _player.position.x - _spriteWidth * _repositionMultiplier)
+            if (picture.position.x < _player.position.x - _spriteWidth * _repositionMultiplier)
             {
-                MoveBackgroundToRight(bg);
+                MoveBackgroundToRight(picture);
             }
         }
 
@@ -61,8 +62,7 @@ public class BackgroundLooper : MonoBehaviour
         _lastPlayerPosition = _player.position;
     }
 
-
-    private void MoveBackgroundToRight(Transform bg)
+    private void MoveBackgroundToRight(Transform picture)
     {
         Transform rightmost = _backgrounds[_initialIndex];
 
@@ -74,6 +74,6 @@ public class BackgroundLooper : MonoBehaviour
             }
         }
 
-        bg.position = rightmost.position + Vector3.right * _spriteWidth;
+        picture.position = rightmost.position + Vector3.right * _spriteWidth;
     }
 }

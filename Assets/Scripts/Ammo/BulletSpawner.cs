@@ -37,7 +37,7 @@ public class BulletSpawner : Spawner<Bullet>
 
             if (_bulletSprites != null && _bulletSprites.Length > 0)
             {
-                bullet.SetSprite(_bulletSprites[UnityEngine.Random.Range(0, 
+                bullet.SetSprite(_bulletSprites[Random.Range(0, 
                     _bulletSprites.Length)]);
             }
         }

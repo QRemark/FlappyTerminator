@@ -1,5 +1,3 @@
-using System;
-
 public class SpawnDifficultyScaler : ISpawnDifficultyScaler
 {
     private readonly float _initialInterval;

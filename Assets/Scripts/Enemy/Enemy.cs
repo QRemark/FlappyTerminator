@@ -75,6 +75,7 @@ public class Enemy : MonoBehaviour, IDisappearable
     private IEnumerator StartMovementAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
+
         _enemyMover.StartFollowing();
     }
 }
