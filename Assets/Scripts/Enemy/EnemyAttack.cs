@@ -24,10 +24,7 @@ public class EnemyAttack : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _enemyAudio = GetComponent<AttackAudio>();
 
-        if (_bulletSpawner != null)
-        {
-            _bulletSpawner.SetPoolParent(_bulletPoolParent);
-        }
+        _bulletSpawner.SetPoolParent(_bulletPoolParent);
     }
 
     public void EnableAttack()
@@ -44,13 +41,13 @@ public class EnemyAttack : MonoBehaviour
 
     public void ResetState()
     {
-        if (_spriteRenderer != null)
+        if (_spriteRenderer != null)//не убирается
             _spriteRenderer.sprite = _defaultSprite;
     }
 
     private void FireBullet()
     {
-        if (!_canAttack || _player == null || _bulletSpawner == null)
+        if (_canAttack == false)
             return;
 
         float distanceToPlayer = transform.position.x - _player.position.x;
@@ -61,27 +58,20 @@ public class EnemyAttack : MonoBehaviour
 
             Bullet bullet = _bulletSpawner.Fire(transform.position, false);
 
-            if (bullet != null)
-            {
-                bullet.SetOwner(transform);
-            }
+            bullet.SetOwner(transform);
         }
     }
 
     private void PlayAttackVisual()
     {
-        if (_attackSprite != null && _spriteRenderer != null)
-        {
-            _spriteRenderer.sprite = _attackSprite;
-            _enemyAudio?.AttackSound();
+        _spriteRenderer.sprite = _attackSprite;
+        _enemyAudio?.AttackSound();
 
-            Invoke(nameof(ResetSprite), _spriteResetDelay);
-        }
+        Invoke(nameof(ResetSprite), _spriteResetDelay);
     }
 
     private void ResetSprite()
     {
-        if (_spriteRenderer != null)
-            _spriteRenderer.sprite = _defaultSprite;
+        _spriteRenderer.sprite = _defaultSprite;
     }
 }

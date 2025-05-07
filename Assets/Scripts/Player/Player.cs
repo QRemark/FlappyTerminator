@@ -29,10 +29,7 @@ public class Player : MonoBehaviour
         _bulletSpawner = GetComponentInChildren<BulletSpawner>();
         _startPosition = transform.position;
 
-        if (_bulletSpawner != null && _playerBulletPoolParent != null)
-        {
-            _bulletSpawner.SetPoolParent(_playerBulletPoolParent);
-        }
+        _bulletSpawner.SetPoolParent(_playerBulletPoolParent);
     }
 
     private void OnEnable()

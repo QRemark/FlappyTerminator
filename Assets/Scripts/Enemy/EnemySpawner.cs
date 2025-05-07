@@ -43,7 +43,8 @@ public class EnemySpawner : Spawner<Enemy>
 
     public void Reset()
     {
-        _pool.ResetPool(_prefab, _initialPoolSize, _poolMaxSize);
+        //_pool.ResetPool(_prefab, _initialPoolSize, _poolMaxSize);
+        Pool.ResetPool(Prefab, _initialPoolSize, PoolMaxSize);
         ClearActiveObjects();
 
         _difficultyScaler.Reset();
@@ -53,10 +54,12 @@ public class EnemySpawner : Spawner<Enemy>
 
     private void SpawnEnemy()
     {
-        if (ActiveObjectsCount >= _poolMaxSize || _player == null)
+        //if (ActiveObjectsCount >= _poolMaxSize || _player == null)
+        if (ActiveObjectsCount >= PoolMaxSize || _player == null)
             return;
 
-        Enemy enemy = GetPreparedObjectFromPool();
+        //Enemy enemy = GetPreparedObjectFromPool();
+        Enemy enemy = GetObjectFromPool1(false);
 
         if (enemy != null)
         {

@@ -8,16 +8,12 @@ public class BackgroundMusic : MonoBehaviour
     [SerializeField] private AudioMixerGroup _musicGroup;
 
     private AudioSource _audioSource;
-    
+
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
-       
 
-        if (_musicGroup != null)
-        {
-            _audioSource.outputAudioMixerGroup = _musicGroup;
-        }
+        _audioSource.outputAudioMixerGroup = _musicGroup;
 
         _audioSource.loop = true;
         _audioSource.playOnAwake = false;
@@ -25,7 +21,7 @@ public class BackgroundMusic : MonoBehaviour
 
     public void PlayMusic()
     {
-        if (_musicClip != null && !_audioSource.isPlaying)
+        if (_audioSource.isPlaying == false)
         {
             _audioSource.clip = _musicClip;
             _audioSource.Play();
@@ -47,6 +43,6 @@ public class BackgroundMusic : MonoBehaviour
 
     public void ContinueMusic()
     {
-        _audioSource.UnPause(); 
+        _audioSource.UnPause();
     }
 }

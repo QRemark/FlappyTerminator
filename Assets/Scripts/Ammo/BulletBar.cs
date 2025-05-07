@@ -8,32 +8,26 @@ public class BulletBar : MonoBehaviour
 
     public void Initialize(BulletSpawner spawner)
     {
-        if (_bulletSpawner != null)
-            _bulletSpawner.CountersUpdated -= UpdateBulletBar;
-
         _bulletSpawner = spawner;
-
-        if (_bulletSpawner != null && _slider != null)
-        {
-            _slider.maxValue = _bulletSpawner.TotalCreatedObjects;
-            _slider.value = _bulletSpawner.TotalCreatedObjects - _bulletSpawner.ActiveObjectsCount;
-
-            _bulletSpawner.CountersUpdated += UpdateBulletBar;
-        }
-    }
-
-    private void UpdateBulletBar()
-    {
-        if (_slider == null || _bulletSpawner == null)
-            return;
 
         _slider.maxValue = _bulletSpawner.TotalCreatedObjects;
         _slider.value = _bulletSpawner.TotalCreatedObjects - _bulletSpawner.ActiveObjectsCount;
     }
 
-    private void OnDestroy()
+    private void OnEnable()
     {
-        if (_bulletSpawner != null)
-            _bulletSpawner.CountersUpdated -= UpdateBulletBar;
+        _bulletSpawner.CountersUpdated += UpdateBulletBar;
+    }
+
+    private void OnDisable()
+    {
+        _bulletSpawner.CountersUpdated -= UpdateBulletBar;
+    }
+
+    private void UpdateBulletBar()
+    {
+
+        _slider.maxValue = _bulletSpawner.TotalCreatedObjects;
+        _slider.value = _bulletSpawner.TotalCreatedObjects - _bulletSpawner.ActiveObjectsCount;
     }
 }

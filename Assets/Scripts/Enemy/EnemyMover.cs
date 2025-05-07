@@ -47,12 +47,12 @@ public class EnemyMover : MonoBehaviour
 
     private void Start()
     {
-        var cam = Camera.main;
-        var camHeight = cam.orthographicSize;
-        var camY = cam.transform.position.y;
+        var camera = Camera.main;
+        var cameraHeight = camera.orthographicSize;
+        var cameraY = camera.transform.position.y;
 
-        _minY = camY - camHeight;
-        _maxY = camY + camHeight - _camMaxHeightLower;
+        _minY = cameraY - cameraHeight;
+        _maxY = cameraY + cameraHeight - _camMaxHeightLower;
     }
 
     public void Setup(Transform player, float timeOffset)
@@ -86,7 +86,8 @@ public class EnemyMover : MonoBehaviour
 
     public void Move()
     {
-        if (_player == null) return;
+        if (_player == null) 
+            return;
 
         if (_isApproaching)
         {
@@ -131,7 +132,7 @@ public class EnemyMover : MonoBehaviour
         UpdateCurrentFollowValues();
 
         float waveY = Mathf.Sin((Time.time + _timeOffset) * _speed) * _moveRange;
-        float rawY = _smoothPlayerY + waveY + _currentYOffset;
+        float rawY = _smoothPlayerY + waveY + _currentYOffset;//посмотреть сюда по переменным
         float clampedY = Mathf.Clamp(rawY, _minY, _maxY);
 
         Vector3 targetPos = new Vector3(
@@ -146,7 +147,7 @@ public class EnemyMover : MonoBehaviour
 
     private void UpdateFollowTargets()
     {
-        _targetFollowDistance = UnityEngine.Random.Range(_followMinDistance, _followMinDistance); // Можно добавить min-max, если хочешь больше вариативности
+        _targetFollowDistance = UnityEngine.Random.Range(_followMinDistance, _followMinDistance);
         _targetYOffset = UnityEngine.Random.Range(_followYOffsetRange.x, _followYOffsetRange.y);
     }
 

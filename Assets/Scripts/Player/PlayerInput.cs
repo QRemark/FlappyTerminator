@@ -14,13 +14,16 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(_jumpKey)) JumpRequested?.Invoke();
-        if (Input.GetKeyDown(_attackKey)) AttackRequested?.Invoke();
-        if (Input.GetKeyDown(_pauseKey)) InputEvents.RaisePause();
+        if (Input.GetKeyDown(_jumpKey)) 
+            JumpRequested?.Invoke();
+
+        if (Input.GetKeyDown(_attackKey)) 
+            AttackRequested?.Invoke();
+
+        if (Input.GetKeyDown(_pauseKey)) 
+            InputEvents.RaisePause();
 
         if (Input.GetKeyDown(_restartKey))
-        {
             InputEvents.RaiseRestart();
-        }
     }
 }

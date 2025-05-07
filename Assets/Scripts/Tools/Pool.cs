@@ -63,11 +63,15 @@ public class Pool<T> where T : MonoBehaviour
         PoolChanged?.Invoke();
     }
 
-    public T GetPreparedObject()
+    public T GetObject1(bool activate)
     {
         if (_deactiveObjects.Count > 0)
         {
             T obj = _deactiveObjects.Dequeue();
+
+            if (activate == true)
+                obj.gameObject.SetActive(true);
+
             _activeObjects.Add(obj);
             PoolChanged?.Invoke();
 
@@ -77,12 +81,20 @@ public class Pool<T> where T : MonoBehaviour
         return null;
     }
 
-    public void ActivateObject(T obj)
+
+    public T GetPreparedObject()
     {
-        if (!obj.gameObject.activeSelf)
+        if (_deactiveObjects.Count > 0)
         {
-            obj.gameObject.SetActive(true);
+            T obj = _deactiveObjects.Dequeue();
+
+            _activeObjects.Add(obj);
+            PoolChanged?.Invoke();
+
+            return obj;
         }
+
+        return null;
     }
 
     public T GetObject()
@@ -99,6 +111,14 @@ public class Pool<T> where T : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void ActivateObject(T obj)
+    {
+        if (!obj.gameObject.activeSelf)
+        {
+            obj.gameObject.SetActive(true);
+        }
     }
 
     public void ReleaseObject(T obj)

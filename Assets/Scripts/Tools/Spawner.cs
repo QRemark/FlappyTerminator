@@ -3,12 +3,24 @@ using System;
 
 public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisappearable
 {
-    [SerializeField] protected T _prefab;
-    [SerializeField] protected int _poolCapacity = 2;
-    
-    [SerializeField] protected int _poolMaxSize = 3;
+    //[SerializeField] protected T _prefab;
+    //[SerializeField] protected int _poolCapacity = 2;
 
-    protected Pool<T> _pool;
+    //[SerializeField] protected int _poolMaxSize = 3;
+
+    //protected Pool<T> _pool;
+
+    [SerializeField] private T _prefab;
+    [SerializeField] private int _poolCapacity = 2;
+
+    [SerializeField] private int _poolMaxSize = 3;
+
+    private Pool<T> _pool;
+
+    public T Prefab => _prefab;
+    public int PoolCapacity => _poolCapacity;
+    public int PoolMaxSize => _poolMaxSize;
+    public Pool<T> Pool => _pool;
 
     public int ActiveObjectsCount => _pool.ActiveCount;
     public int TotalCreatedObjects => _pool.TotalCreated;
@@ -32,6 +44,26 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
         _pool.ClearActiveObjects();
     }
 
+    protected void ReplacePool(Pool<T> newPool)
+    {
+        _pool = newPool;
+        _pool.PoolChanged += UpdateCounters;
+    }
+
+    protected T GetObjectFromPool1(bool activate)
+    {
+        T obj = _pool.GetObject1(activate);
+
+        if (obj == null)
+            return null;
+
+        TotalSpawned++;
+        UpdateCounters();
+        obj.Disappeared += ReturnObjectInPool;
+
+        return obj;
+    }
+    //
     protected T GetObjectFromPool()
     {
         T obj = _pool.GetObject();
@@ -59,7 +91,7 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
 
         return obj;
     }
-    
+    //
     protected void ActivateObject(T obj)
     {
         _pool.ActivateObject(obj);

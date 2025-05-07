@@ -48,12 +48,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 5
   _lifeTime: 5
-  _playerLayer:
+  _targetLayer:
     serializedVersion: 2
     m_Bits: 64
-  _enemyLayer:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!212 &-3385854478637381609
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -13,17 +13,11 @@ public class AttackAudio : MonoBehaviour
     {
         _audioSource = GetComponent<AudioSource>();
 
-        if (_mixerGroup != null)
-        {
-            _audioSource.outputAudioMixerGroup = _mixerGroup;
-        }
+        _audioSource.outputAudioMixerGroup = _mixerGroup;
     }
 
     public void AttackSound()
     {
-        if (_attackSound != null && _audioSource != null)
-        {
-            _audioSource.PlayOneShot(_attackSound);
-        }
+        _audioSource.PlayOneShot(_attackSound);
     }
 }
