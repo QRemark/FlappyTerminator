@@ -17,10 +17,10 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
 
     private Pool<T> _pool;
 
-    public T Prefab => _prefab;
-    public int PoolCapacity => _poolCapacity;
-    public int PoolMaxSize => _poolMaxSize;
-    public Pool<T> Pool => _pool;
+    protected T Prefab => _prefab;
+    protected int PoolCapacity => _poolCapacity;
+    protected int PoolMaxSize => _poolMaxSize;
+    protected Pool<T> Pool => _pool;
 
     public int ActiveObjectsCount => _pool.ActiveCount;
     public int TotalCreatedObjects => _pool.TotalCreated;

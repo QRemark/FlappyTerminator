@@ -3,20 +3,32 @@ using System.Collections.Generic;
 
 public class SpawnPositionGenerator : ISpawnPositionProvider
 {
-    private const int _defaultMaxTrackedPositions = 5;
-    private readonly Vector2 _spawnRangeX;
-    private readonly Vector2 _spawnRangeY;
-    private readonly float _minDistance;
-    private readonly int _maxTrackedPositions;
+    //private const int DefaultMaxTrackedPositions = 5;
+    //private readonly Vector2 _spawnRangeX;
+    //private readonly Vector2 _spawnRangeY;
+    //private readonly float _minDistance;
+    //private readonly int _maxTrackedPositions;
 
-    private readonly int _maxAttempts = 10;
-    private readonly float _fallbackOffsetX = 25f;
-    private readonly float _fallbackY = -1f;
+    //private readonly int _maxAttempts = 10;
+    //private readonly float _fallbackOffsetX = 25f;
+    //private readonly float _fallbackY = -1f;
+
+    //private readonly List<Vector3> _trackedPositions = new();
+
+    private const int DefaultMaxTrackedPositions = 5;
+    private Vector2 _spawnRangeX;
+    private Vector2 _spawnRangeY;
+    private float _minDistance;
+    private int _maxTrackedPositions;
+
+    private int _maxAttempts = 10;
+    private float _fallbackOffsetX = 25f;
+    private float _fallbackY = -1f;
 
     private readonly List<Vector3> _trackedPositions = new();
 
     public SpawnPositionGenerator(Vector2 spawnRangeX, Vector2 spawnRangeY, 
-        float minDistance, int maxTracked = _defaultMaxTrackedPositions)
+        float minDistance, int maxTracked = DefaultMaxTrackedPositions)
     {
         _spawnRangeX = spawnRangeX;
         _spawnRangeY = spawnRangeY;

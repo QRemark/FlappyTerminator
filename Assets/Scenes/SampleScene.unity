@@ -314,6 +314,7 @@ MonoBehaviour:
   _actionButton: {fileID: 250041672}
   _scoreCounter: {fileID: 149063617}
   _topScoresText: {fileID: 77842814}
+  _playerInput: {fileID: 149063622}
 --- !u!1 &77842812
 GameObject:
   m_ObjectHideFlags: 0
@@ -1996,6 +1997,7 @@ MonoBehaviour:
   _bulletBarContainer: {fileID: 167767322}
   _pauseScreen: {fileID: 1497450014}
   _backgroundLooper: {fileID: 791029263}
+  _playerInput: {fileID: 149063622}
 --- !u!1 &524915197
 GameObject:
   m_ObjectHideFlags: 0

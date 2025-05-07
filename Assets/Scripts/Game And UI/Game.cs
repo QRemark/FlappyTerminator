@@ -10,6 +10,7 @@ public class Game : MonoBehaviour
     [SerializeField] private GameObject _bulletBarContainer;
     [SerializeField] private PauseScreen _pauseScreen;
     [SerializeField] private BackgroundLooper _backgroundLooper;
+    [SerializeField] private PlayerInput _playerInput;
 
     private bool _isPaused = false;
 
@@ -19,14 +20,14 @@ public class Game : MonoBehaviour
         _restartScreen.RestartButtonClicked += OnRestartButtonClicked;
         _player.GameOver += OnGameOver;
         _pauseScreen.ResumeButtonClicked += ResumeGame;
-        InputEvents.PauseRequested += TogglePause;
+        _playerInput.PauseRequested += TogglePause;
     }
 
     private void OnDisable()
     {
         _player.GameOver -= OnGameOver;
         _pauseScreen.ResumeButtonClicked -= ResumeGame;
-        InputEvents.PauseRequested -= TogglePause;
+        _playerInput.PauseRequested -= TogglePause;
     }
 
     private void Start()
@@ -41,24 +42,23 @@ public class Game : MonoBehaviour
         _startScreen.Open();
     }
 
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape) && !_restartScreen.isActiveAndEnabled && !_startScreen.isActiveAndEnabled)
-        {
-            if (!_isPaused)
-                PauseGame();
-            else
-                ResumeGame();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Escape) && _restartScreen.isActiveAndEnabled == false && _startScreen.isActiveAndEnabled == false)
+    //    {
+    //        if (_isPaused == false)
+    //            PauseGame();
+    //        else
+    //            ResumeGame();
+    //    }
+    //}
 
     private void TogglePause()
     {
         if (_startScreen.WindowGroup.alpha > 0f || _restartScreen.WindowGroup.alpha > 0f)
             return;
 
-        if (!_isPaused)
+        if (_isPaused==false)
             PauseGame();
         else
             ResumeGame();

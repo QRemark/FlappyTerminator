@@ -9,22 +9,23 @@ public class RestartScreen  : Window
 
     [SerializeField] private ScoreCounter _scoreCounter;
     [SerializeField] private TMP_Text _topScoresText;
+    [SerializeField] private PlayerInput _playerInput;
 
     private string _topScoresTextFormat = "Топ 5 очков:\n\n";
 
     private void OnEnable()
     {
-        InputEvents.RestartRequested += OnSpaceRestart;
+        _playerInput.RestartRequested += OnSpaceRestart;
     }
 
     private void OnDisable()
     {
-        InputEvents.RestartRequested -= OnSpaceRestart;
+        _playerInput.RestartRequested -= OnSpaceRestart;
     }
 
     private void OnSpaceRestart()
     {
-        if (!WindowGroup.interactable)
+        if (WindowGroup.interactable == false)
             return;
 
         RestartButtonClicked?.Invoke();

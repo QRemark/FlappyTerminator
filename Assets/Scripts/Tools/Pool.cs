@@ -11,22 +11,16 @@ public class Pool<T> where T : MonoBehaviour
     private int _maxSize;
     private int _currentCount;
 
-    public int TotalCreated { get; private set; }
-    public int ActiveCount => _activeObjects.Count;
-    public List<T> ActiveObjects => _activeObjects;
-
-    public event Action PoolChanged;
-
     public Pool()
     {
         _deactiveObjects = new Queue<T>();
         _activeObjects = new List<T>();
     }
 
-    public void SetParent(Transform parent)
-    {
-        _parent = parent;
-    }
+    public event Action PoolChanged;
+
+    public int TotalCreated { get; private set; }
+    public int ActiveCount => _activeObjects.Count;
 
     public void Initialize(T prefab, int initialSize, int maxSize)
     {
@@ -49,6 +43,11 @@ public class Pool<T> where T : MonoBehaviour
                 _deactiveObjects.Enqueue(obj);
             }
         }
+    }
+
+    public void SetParent(Transform parent)
+    {
+        _parent = parent;
     }
 
     public void ClearActiveObjects()
@@ -80,8 +79,7 @@ public class Pool<T> where T : MonoBehaviour
 
         return null;
     }
-
-
+    //
     public T GetPreparedObject()
     {
         if (_deactiveObjects.Count > 0)
@@ -112,10 +110,10 @@ public class Pool<T> where T : MonoBehaviour
 
         return null;
     }
-
+    //
     public void ActivateObject(T obj)
     {
-        if (!obj.gameObject.activeSelf)
+        if (obj.gameObject.activeSelf == false)
         {
             obj.gameObject.SetActive(true);
         }
@@ -123,7 +121,7 @@ public class Pool<T> where T : MonoBehaviour
 
     public void ReleaseObject(T obj)
     {
-        if (!_deactiveObjects.Contains(obj))
+        if (_deactiveObjects.Contains(obj) == false)
         {
             if (obj is Enemy enemy)
             {
