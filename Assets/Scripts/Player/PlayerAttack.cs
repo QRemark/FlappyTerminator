@@ -26,9 +26,9 @@ public class PlayerAttack : MonoBehaviour
 
     public void Attack()
     {
-        Bullet bullet = _bulletSpawner.Fire(_bulletSpawnPoint.position, true);
+        Bullet bullet = _bulletSpawner.Fire(_bulletSpawnPoint.position);
 
-        if (bullet != null)// если много стрелять то будут ошибки
+        if (bullet != null)
         {
             bullet.SetOwner(transform);
             PlayAttackFeedback();

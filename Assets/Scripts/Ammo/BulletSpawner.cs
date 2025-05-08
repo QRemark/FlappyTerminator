@@ -12,17 +12,6 @@ public class BulletSpawner : Spawner<Bullet>
 
     protected override void Start()
     {
-        //_pool = new Pool<Bullet>();
-
-        //if (PoolParent == null && _localPoolParent != null)
-        //    PoolParent = _localPoolParent;
-
-        //if (PoolParent != null)
-        //    _pool.SetParent(PoolParent);
-
-        //int initialSize = GetComponent<Player>() != null ? _playerBuletsCount : _poolCapacity;
-        //_pool.Initialize(_prefab, initialSize, _poolMaxSize);
-        //_pool.PoolChanged += UpdateCounters;
         var newPool = new Pool<Bullet>();
         ReplacePool(newPool);
 
@@ -37,9 +26,8 @@ public class BulletSpawner : Spawner<Bullet>
         Pool.PoolChanged += UpdateCounters;
     }
 
-    public Bullet Fire(Vector3 position, bool isPlayerBullet)//посмотреть убрать булю
+    public Bullet Fire(Vector3 position)
     {
-        //Bullet bullet = GetObjectFromPool();
         Bullet bullet = GetObjectFromPool1(true);
 
         if (bullet != null)
@@ -62,7 +50,6 @@ public class BulletSpawner : Spawner<Bullet>
         bool isPlayer = GetComponent<Player>() != null;
         int initialSize = isPlayer ? _playerBuletsCount : _enemyBuletsCount;
 
-        //_pool.ResetPool(_prefab, initialSize, _poolMaxSize);
         Pool.ResetPool(Prefab, initialSize, PoolMaxSize);
 
         ClearActiveObjects();

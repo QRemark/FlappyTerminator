@@ -16,17 +16,17 @@ public class Game : MonoBehaviour
 
     private void OnEnable()
     {
-        _startScreen.PlayButtonClicked += OnPlayButtonClicked;
+        _startScreen.ButtonClicked += OnPlayButtonClicked;
         _restartScreen.RestartButtonClicked += OnRestartButtonClicked;
         _player.GameOver += OnGameOver;
-        _pauseScreen.ResumeButtonClicked += ResumeGame;
+        _pauseScreen.ButtonClicked += ResumeGame;
         _playerInput.PauseRequested += TogglePause;
     }
 
     private void OnDisable()
     {
         _player.GameOver -= OnGameOver;
-        _pauseScreen.ResumeButtonClicked -= ResumeGame;
+        _pauseScreen.ButtonClicked -= ResumeGame;
         _playerInput.PauseRequested -= TogglePause;
     }
 
@@ -41,17 +41,6 @@ public class Game : MonoBehaviour
         _bulletBarContainer.SetActive(false);
         _startScreen.Open();
     }
-
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Escape) && _restartScreen.isActiveAndEnabled == false && _startScreen.isActiveAndEnabled == false)
-    //    {
-    //        if (_isPaused == false)
-    //            PauseGame();
-    //        else
-    //            ResumeGame();
-    //    }
-    //}
 
     private void TogglePause()
     {

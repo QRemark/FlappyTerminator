@@ -23,7 +23,7 @@ public class EnemyAttack : MonoBehaviour
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _enemyAudio = GetComponent<AttackAudio>();
-
+        
         _bulletSpawner.SetPoolParent(_bulletPoolParent);
     }
 
@@ -41,7 +41,7 @@ public class EnemyAttack : MonoBehaviour
 
     public void ResetState()
     {
-        if (_spriteRenderer != null)//не убирается
+        if (_spriteRenderer != null)
             _spriteRenderer.sprite = _defaultSprite;
     }
 
@@ -56,7 +56,7 @@ public class EnemyAttack : MonoBehaviour
         {
             PlayAttackVisual();
 
-            Bullet bullet = _bulletSpawner.Fire(transform.position, false);
+            Bullet bullet = _bulletSpawner.Fire(transform.position);
 
             bullet.SetOwner(transform);
         }

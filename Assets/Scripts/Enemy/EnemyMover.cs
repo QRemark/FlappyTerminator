@@ -132,12 +132,12 @@ public class EnemyMover : MonoBehaviour
         UpdateCurrentFollowValues();
 
         float waveY = Mathf.Sin((Time.time + _timeOffset) * _speed) * _moveRange;
-        float rawY = _smoothPlayerY + waveY + _currentYOffset;//посмотреть сюда по переменным
-        float clampedY = Mathf.Clamp(rawY, _minY, _maxY);
+        float desiredY = _smoothPlayerY + waveY + _currentYOffset;
+        float targetY = Mathf.Clamp(desiredY, _minY, _maxY);
 
         Vector3 targetPos = new Vector3(
             _player.position.x + _currentFollowDistance,
-            clampedY,
+            targetY,
             0f
         );
 

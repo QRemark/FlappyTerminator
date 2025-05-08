@@ -3,13 +3,6 @@ using System;
 
 public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisappearable
 {
-    //[SerializeField] protected T _prefab;
-    //[SerializeField] protected int _poolCapacity = 2;
-
-    //[SerializeField] protected int _poolMaxSize = 3;
-
-    //protected Pool<T> _pool;
-
     [SerializeField] private T _prefab;
     [SerializeField] private int _poolCapacity = 2;
 
@@ -63,35 +56,7 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
 
         return obj;
     }
-    //
-    protected T GetObjectFromPool()
-    {
-        T obj = _pool.GetObject();
-
-        if (obj == null)
-            return null;
-
-        TotalSpawned++;
-        UpdateCounters();
-        obj.Disappeared += ReturnObjectInPool;
-
-        return obj;
-    }
-    
-    protected T GetPreparedObjectFromPool()
-    {
-        T obj = _pool.GetPreparedObject();
-
-        if (obj == null)
-            return null;
-
-        TotalSpawned++;
-        UpdateCounters();
-        obj.Disappeared += ReturnObjectInPool;
-
-        return obj;
-    }
-    //
+   
     protected void ActivateObject(T obj)
     {
         _pool.ActivateObject(obj);

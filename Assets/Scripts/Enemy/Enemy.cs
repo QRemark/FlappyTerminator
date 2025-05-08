@@ -61,7 +61,8 @@ public class Enemy : MonoBehaviour, IDisappearable
 
     public void Disappear()
     {
-        if (_isDisappearing) return;
+        if (_isDisappearing) 
+            return;
 
         _isDisappearing = true;
         Disappeared?.Invoke(this);
