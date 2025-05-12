@@ -36,7 +36,7 @@ public class BulletSpawner : Spawner<Bullet>
         ClearActiveObjects();
     }
 
-    public Bullet Fire(Vector3 position)
+    public Bullet Shoot(Vector3 position)
     {
         Bullet bullet = GetObjectFromPool(true);
 

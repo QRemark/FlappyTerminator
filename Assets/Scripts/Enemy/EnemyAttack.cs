@@ -56,7 +56,7 @@ public class EnemyAttack : MonoBehaviour
         {
             PlayAttackVisual();
 
-            Bullet bullet = _bulletSpawner.Fire(transform.position);
+            Bullet bullet = _bulletSpawner.Shoot(transform.position);
 
             bullet.SetOwner(transform);
         }

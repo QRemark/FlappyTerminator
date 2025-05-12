@@ -16,17 +16,16 @@ public class BulletBar : MonoBehaviour
 
     private void OnEnable()
     {
-        _bulletSpawner.CountersUpdated += UpdateBulletBar;
+        _bulletSpawner.CountersUpdated += Refresh;
     }
 
     private void OnDisable()
     {
-        _bulletSpawner.CountersUpdated -= UpdateBulletBar;
+        _bulletSpawner.CountersUpdated -= Refresh;
     }
 
-    private void UpdateBulletBar()
+    private void Refresh()
     {
-
         _slider.maxValue = _bulletSpawner.TotalCreatedObjects;
         _slider.value = _bulletSpawner.TotalCreatedObjects - _bulletSpawner.ActiveObjectsCount;
     }

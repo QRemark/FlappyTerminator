@@ -26,7 +26,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void Attack()
     {
-        Bullet bullet = _bulletSpawner.Fire(_bulletSpawnPoint.position);
+        Bullet bullet = _bulletSpawner.Shoot(_bulletSpawnPoint.position);
 
         if (bullet != null)
         {
