@@ -10,7 +10,6 @@ public abstract class Window : MonoBehaviour
     private float _openAlpha = 1f;
 
     public CanvasGroup WindowGroup => _windowGroup;
-    protected Button ActionButton => _actionButton;
 
     private void OnEnable()
     {

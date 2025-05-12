@@ -29,15 +29,15 @@ public class PlayerMover : MonoBehaviour
             _rotationSpeed * Time.deltaTime);
     }
 
-    public void Jump()
-    {
-        _rigidbody2D.velocity = new Vector2(_speed, _tapForce);
-        transform.rotation = _maxRotation;
-    }
-
     public void Reset()
     {
         _rigidbody2D.velocity = Vector2.zero;
         transform.position = _startPosition;
+    }
+
+    public void Jump()
+    {
+        _rigidbody2D.velocity = new Vector2(_speed, _tapForce);
+        transform.rotation = _maxRotation;
     }
 }

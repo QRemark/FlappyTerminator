@@ -62,7 +62,7 @@ public class Pool<T> where T : MonoBehaviour
         PoolChanged?.Invoke();
     }
 
-    public T GetObject1(bool activate)
+    public T GetObject(bool activate)
     {
         if (_deactiveObjects.Count > 0)
         {

@@ -43,9 +43,9 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour, IDisap
         _pool.PoolChanged += UpdateCounters;
     }
 
-    protected T GetObjectFromPool1(bool activate)
+    protected T GetObjectFromPool(bool activate)
     {
-        T obj = _pool.GetObject1(activate);
+        T obj = _pool.GetObject(activate);
 
         if (obj == null)
             return null;

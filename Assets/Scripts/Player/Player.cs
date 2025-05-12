@@ -48,21 +48,6 @@ public class Player : MonoBehaviour
         GameOver -= OnGameOver;
     }
 
-    private void ProcessCollision(IInteractable interactable)
-    {
-        interactable.Interact();
-
-        if (interactable is Earth)
-        {
-            TriggerGameOver();
-        }
-    }
-
-    public void TriggerGameOver()
-    {
-        GameOver?.Invoke();
-    }
-
     public void Reset()
     {
         _scoreCounter.Reset();
@@ -71,6 +56,21 @@ public class Player : MonoBehaviour
         _enemySpawner?.Reset();
         transform.position = _startPosition;
         Time.timeScale = 1;
+    }
+
+    public void TriggerGameOver()
+    {
+        GameOver?.Invoke();
+    }
+
+    private void ProcessCollision(IInteractable interactable)
+    {
+        interactable.Interact();
+
+        if (interactable is Earth)
+        {
+            TriggerGameOver();
+        }
     }
 
     private void OnGameOver()

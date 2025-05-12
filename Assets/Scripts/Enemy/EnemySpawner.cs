@@ -56,7 +56,7 @@ public class EnemySpawner : Spawner<Enemy>
         if (ActiveObjectsCount >= PoolMaxSize || _player == null)
             return;
 
-        Enemy enemy = GetObjectFromPool1(false);
+        Enemy enemy = GetObjectFromPool(false);
 
         if (enemy != null)
         {

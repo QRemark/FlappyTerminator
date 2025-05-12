@@ -26,9 +26,19 @@ public class BulletSpawner : Spawner<Bullet>
         Pool.PoolChanged += UpdateCounters;
     }
 
+    public void Reset()
+    {
+        bool isPlayer = GetComponent<Player>() != null;
+        int initialSize = isPlayer ? _playerBuletsCount : _enemyBuletsCount;
+
+        Pool.ResetPool(Prefab, initialSize, PoolMaxSize);
+
+        ClearActiveObjects();
+    }
+
     public Bullet Fire(Vector3 position)
     {
-        Bullet bullet = GetObjectFromPool1(true);
+        Bullet bullet = GetObjectFromPool(true);
 
         if (bullet != null)
         {
@@ -43,16 +53,6 @@ public class BulletSpawner : Spawner<Bullet>
         }
 
         return bullet;
-    }
-
-    public void Reset()
-    {
-        bool isPlayer = GetComponent<Player>() != null;
-        int initialSize = isPlayer ? _playerBuletsCount : _enemyBuletsCount;
-
-        Pool.ResetPool(Prefab, initialSize, PoolMaxSize);
-
-        ClearActiveObjects();
     }
 
     public void SetPoolParent(Transform poolParent)

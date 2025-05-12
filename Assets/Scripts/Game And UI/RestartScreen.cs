@@ -23,15 +23,6 @@ public class RestartScreen  : Window
         _playerInput.RestartRequested -= OnSpaceRestart;
     }
 
-    private void OnSpaceRestart()
-    {
-        if (WindowGroup.interactable == false)
-            return;
-
-        RestartButtonClicked?.Invoke();
-    }
-
-
     public override void Open()
     {
         base.Open();
@@ -39,6 +30,10 @@ public class RestartScreen  : Window
         ShowTopScores();
     }
 
+    public override void OnButtonClick()
+    {
+        RestartButtonClicked?.Invoke();
+    }
 
     private void ShowTopScores()
     {
@@ -51,8 +46,11 @@ public class RestartScreen  : Window
         }
     }
 
-    public override void OnButtonClick()
+    private void OnSpaceRestart()
     {
+        if (WindowGroup.interactable == false)
+            return;
+
         RestartButtonClicked?.Invoke();
     }
 }

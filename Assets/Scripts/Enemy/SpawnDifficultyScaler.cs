@@ -6,6 +6,11 @@ public class SpawnDifficultyScaler : ISpawnDifficultyScaler
 
     public float CurrentInterval { get; private set; }
 
+    public void Reset()
+    {
+        CurrentInterval = _initialInterval;
+    }
+
     public SpawnDifficultyScaler(float initial, float min, float step)
     {
         _initialInterval = initial;
@@ -18,10 +23,5 @@ public class SpawnDifficultyScaler : ISpawnDifficultyScaler
     {
         if (CurrentInterval > _minInterval)
             CurrentInterval -= _decreaseStep;
-    }
-
-    public void Reset()
-    {
-        CurrentInterval = _initialInterval;
     }
 }

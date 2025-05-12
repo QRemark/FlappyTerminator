@@ -7,31 +7,19 @@ public class ScoreCounter : MonoBehaviour
     
     private int _score;
     private int _topScroresCount = 5;
-    private int _point = 10;
     private int _resetScore = 0;
 
     private List<int> _topScores = new List<int>();
 
-    public void RegisterEnemy(Enemy enemy)
+    public void Reset()
     {
-        enemy.Disappeared -= OnEnemyDisappeared;
-        enemy.Disappeared += OnEnemyDisappeared;
-    }
-
-    private void OnEnemyDisappeared(IDisappearable disappearable)
-    {
-        Add(_point);
+        _score = _resetScore;
+        _scoreView.UpdateScore(_score);
     }
 
     public void Add(int points)
     {
         _score += points;
-        _scoreView.UpdateScore(_score);
-    }
-
-    public void Reset()
-    {
-        _score = _resetScore;
         _scoreView.UpdateScore(_score);
     }
 
